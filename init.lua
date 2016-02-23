@@ -1,6 +1,6 @@
 --Nssb
 --Materials
---sono triste per blockmen
+
 
 minetest.register_node("nssb:mossy_stone_brick", {
 	description = "Mossy Stone Brick",
