@@ -185,7 +185,7 @@ minetest.register_node("nssb:web_cocoon", {
 
 --schematichs generation
 
-function nssb_register_buildings (build, numerone, blocco,--[[ bloccosu, ]]deep, bloccodeep--[[, largo, bloccolargo]])
+function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep, bloccodeep, raggio, near)
 
 minetest.register_on_generated(function(minp, maxp, seed)
 	local i, j, k
@@ -194,19 +194,24 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	k = math.random(minp.z, maxp.z)
 	for j=minp.y,maxp.y do
 		local pos1 = {x=i, y=j, z=k}
---				local pos2 = {x=i, y=j+1, z=k}
-				local pos3 = {x=i, y=j+deep, z=k}
---				local pos4 = {x=i+largo, y=j+1, z=k+largo}
-				local n = minetest.env:get_node(pos1).name
---				local l = minetest.env:get_node(pos4).name
-				local d = minetest.env:get_node(pos3).name
---				local u = minetest.env:get_node(pos2).name
-				if n== blocco and--[[ u== bloccosu and l== bloccolargo and]] d==bloccodeep and flag==0 and math.random(1,numerone)==1 then
-					minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
-					--minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
-					flag=1
+		local pos2 = {x=i+giu, y=j-1, z=k+giu}
+		local pos3 = {x=i, y=j+deep, z=k}
+		local n = minetest.env:get_node(pos1).name
+		local d = minetest.env:get_node(pos3).name
+		local u = minetest.env:get_node(pos2).name
+				if n== blocco and u== bloccogiu and d==bloccodeep and flag==0 and math.random(1,numerone)==1 then
+						if minetest.find_node_near(pos3, raggio, near) then
+								minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
+								--minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
+								flag=1
+						end
 				end
+
 	end
+end)
+
+end
+
 	
 	--[[
 	for i=minp.x,maxp.x do
@@ -217,10 +222,10 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local pos3 = {x=i, y=j+deep, z=k}
 --				local pos4 = {x=i+largo, y=j+1, z=k+largo}
 				local n = minetest.env:get_node(pos1).name
---				local l = minetest.env:get_node(pos4).name
+				local l = minetest.env:get_node(pos4).name
 				local d = minetest.env:get_node(pos3).name
 --				local u = minetest.env:get_node(pos2).name
-				if n== blocco and--[[ u== bloccosu and l== bloccolargo and]] d==bloccodeep and flag==0 and math.random(1,numerone)==1 then
+				if n== blocco and  u== bloccosu and l== bloccolargo and d==bloccodeep and flag==0 and math.random(1,numerone)==1 then
 					minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
 					--minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
 					flag=1
@@ -229,20 +234,19 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 	end
 	]]--
-	
-end)
 
-end
 
---nssb_register_buildings ('spiaggiagranchius', 25000, "default:sand",--[["air",]] 2, "air"--[[, 1, "default:sand"]])
-nssb_register_buildings ('granchiusacqua', 25000, "default:sand",--[["default:water_source", ]]8,"default:water_source"--[[, 2, "default:water_source"]])
---nssb_register_buildings ('ooteca', 25000, "default:dirt_with_grass",--[[ "air",]] 2, "air"--[[, 4, "default:tree"]])
---nssb_register_buildings ('minuscolaooteca', 25000, "default:dirt_with_grass", --[["air",]] 2, "air"--[[, 4, "default:tree"]])
---nssb_register_buildings ('piccolaooteca', 25000, "default:dirt_with_grass", --[["air",]] 2, "air"--[[, 4, "default:tree"]])
-nssb_register_buildings ('arcatemarine', 25000, "default:sand",--[[ "default:sand",]] 13, "default:water_source"--[[, 1, "default:water_source"]])
-nssb_register_buildings ('grandepiramide', 25000, "default:sand", --[["default:water_source",]] 22, "default:water_source"--[[, 2, "default:water_source"]])
---nssb_register_buildings ('collinaa', 25000, "default:dirt_with_grass", --[["air",]] 2, "air"--[[, 1, "air"]])
-nssb_register_buildings ('bozzoli', 25000, "default:dirt_with_grass", --[["air",]] 7, "default:jungle_leaves"--[[, 2, "default:jungle_tree"]])
+
+--(nome della costruzione, numerone (tra 1 e numerone viene fatto il math.random), blocco sul quale viene messa la schematica, distanza a cui verrà calcolato bloccogiù, bloccogiù (serve per mettere le schematiche in luoghi pianeggianti), deep è il numero di un nesimo blocco sopra la pos1 per mettere le costruzioni profonde, bloccodeep è il blocco in alto, raggio in cui cerca i blocchi simili, blocco simile da trovare)
+nssb_register_buildings ('spiaggiagranchius', 1, "default:sand", 3, "default:sand", 2, "air",  3, "air")
+nssb_register_buildings ('granchiusacqua', 1, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source")
+nssb_register_buildings ('ooteca', 1, "default:dirt_with_grass",4, "default:dirt", 2, "air", 24, "default:tree")
+nssb_register_buildings ('minuscolaooteca', 3, "default:dirt_with_grass",3 , "default:dirt", 2, "air", 24, "default:tree")
+nssb_register_buildings ('piccolaooteca', 3, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "default:tree")
+nssb_register_buildings ('arcatemarine', 1, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source")
+nssb_register_buildings ('grandepiramide', 1, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source")
+nssb_register_buildings ('collinaa', 3, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air")
+nssb_register_buildings ('bozzoli', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree")
 
 --Eggs
 
