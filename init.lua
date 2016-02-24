@@ -81,7 +81,7 @@ minetest.register_node("nssb:ant_stone", {
 	description = "Ant Stone",
 	tiles = {"ant_stone.png"},
 	is_ground_content = false,
-	groups = {cracky=1, stone=2},
+	groups = {cracky=1, stone=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -239,14 +239,18 @@ end
 
 --(nome della costruzione, numerone (tra 1 e numerone viene fatto il math.random), blocco sul quale viene messa la schematica, distanza a cui verrà calcolato bloccogiù, bloccogiù (serve per mettere le schematiche in luoghi pianeggianti), deep è il numero di un nesimo blocco sopra la pos1 per mettere le costruzioni profonde, bloccodeep è il blocco in alto, raggio in cui cerca i blocchi simili, blocco simile da trovare)
 nssb_register_buildings ('spiaggiagranchius', 1, "default:sand", 3, "default:sand", 2, "air",  3, "air")
-nssb_register_buildings ('granchiusacqua', 1, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source")
+nssb_register_buildings ('acquagranchius', 1, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source")
 nssb_register_buildings ('ooteca', 1, "default:dirt_with_grass",4, "default:dirt", 2, "air", 24, "default:tree")
 nssb_register_buildings ('minuscolaooteca', 3, "default:dirt_with_grass",3 , "default:dirt", 2, "air", 24, "default:tree")
 nssb_register_buildings ('piccolaooteca', 3, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "default:tree")
-nssb_register_buildings ('arcatemarine', 1, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source")
+nssb_register_buildings ('arcate', 1, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source")
 nssb_register_buildings ('grandepiramide', 1, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source")
-nssb_register_buildings ('collinaa', 3, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air")
+nssb_register_buildings ('collina', 3, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air")
+nssb_register_buildings ('rovine1', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree")
+nssb_register_buildings ('megaformicaio', 3, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air")
 nssb_register_buildings ('bozzoli', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree")
+--nssb_register_buildings ('rovine2', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree") (bisogna farla saltare fuori -8 blocchi sotto pos1... ma come?)
+
 
 --Eggs
 
@@ -260,7 +264,7 @@ function nssb_register_eggs (name, descr, int, wide, troppi, neigh)
 		groups = {snappy=1},
 	})
 
---[[
+
 	minetest.register_abm({
 	nodenames = {"nssb:".. name .."_eggs"},
 	neighbors = {neigh},
@@ -281,7 +285,7 @@ function nssb_register_eggs (name, descr, int, wide, troppi, neigh)
 		end
 	end
 	})
-]]
+
 end
 
 nssb_register_eggs ('ant_worker', 'Ant Worker', 16, 2, 4, "air")
