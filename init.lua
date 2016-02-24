@@ -273,7 +273,7 @@ function nssb_register_eggs (name, descr, int, wide, troppi, neigh)
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local pos1 = {x=pos.x+math.random(-wide,wide), y=pos.y+0.5, z=pos.z+math.random(-wide,wide)}
 		local n = minetest.env:get_node(pos1).name
-		if n ~= "air" then
+		if n ~= "air" and n ~= "default:water_source" then
 			return
 		end
 		local count = 0
