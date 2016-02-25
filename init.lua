@@ -1,6 +1,6 @@
 --Nssb
 --Materials
-
+--Gioforchio caro, mancano i vari Bloco fabbricati! I bozzoli che droppino vari oggetti tipo armi o cose del genere o può far spawnare ragni (sembra divertente!), da far spawnare rovine 2 se riesci e poi commentare il codice e scrivere il readme! O dici che non è abbastanza di impatto per la prima release? La 0.1 in Wip mods! Potremmo fare un altro trailer!!!
 
 minetest.register_node("nssb:mossy_stone_brick", {
 	description = "Mossy Stone Brick",
@@ -179,9 +179,24 @@ minetest.register_node("nssb:web_cone_down", {
 minetest.register_node("nssb:web_cocoon", {
 	description = "Web Cocoon",
 	tiles = {"web_cocoon.png"},
+	--ho provato, ma ho fallito durissimooooooooo!!!!
+	--[[local dro = math.random(1,4)
+	if dro == 1 then
+		drop = "nssm:ant_sword",
+	elseif dro == 2 then
+		drop = "nssm:mantis_sword",
+	elseif dro == 3 then
+		drop = "nssm:crab_light_mace",
+	elseif dro == 4 then
+		drop = "nssm:masticone_fang_sword",]]
 	is_ground_content = false,
 	groups = {snappy=1, flammable=2},
 })
+
+
+
+
+
 
 --schematichs generation
 
@@ -226,9 +241,6 @@ function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep,
 	end)
 
 end
-
-
---Codice di riempimento sotto i formicai: deve scorrere tutti i blocchi per 30 almeno e mettere dirt ogni volta
 
 
 --(nome della costruzione, numerone (tra 1 e numerone viene fatto il math.random), blocco sul quale viene messa la schematica, distanza a cui verr� calcolato bloccogi�, bloccogi� (serve per mettere le schematiche in luoghi pianeggianti), deep � il numero di un n-esimo blocco sopra la pos1 per mettere le costruzioni profonde, bloccodeep � il blocco in alto, raggio in cui cerca i blocchi simili, blocco simile da trovare, misura del lato della schematica sotto cui mettere dirt)
