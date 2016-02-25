@@ -185,7 +185,7 @@ minetest.register_node("nssb:web_cocoon", {
 
 --schematichs generation
 
-function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep, bloccodeep, raggio, near)
+function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep, bloccodeep, raggio, near, lato)
 
 minetest.register_on_generated(function(minp, maxp, seed)
 	local i, j, k
@@ -206,49 +206,41 @@ minetest.register_on_generated(function(minp, maxp, seed)
 								flag=1
 						end
 				end
-
+	
+	for dx = 0,lato do
+		for dz = 0,lato do
+			for dy = j-1,-lato do
+				local f = {x = pos1.x+dx, y=pos1.y+dy, z=pos1.z+dz}
+				local fg = minetest.env:get_node(f).name
+				if fg == "air" then
+					minetest.env:set_node(f, {name="default:dirt"})
+				end
+			end
+		end
 	end
+	
+end
+
 end)
 
 end
 
 	
-	--[[
-	for i=minp.x,maxp.x do
-		for j=minp.y,maxp.y do
-			for k=minp.z,maxp.z do
-				local pos1 = {x=i, y=j, z=k}
---				local pos2 = {x=i, y=j+1, z=k}
-				local pos3 = {x=i, y=j+deep, z=k}
---				local pos4 = {x=i+largo, y=j+1, z=k+largo}
-				local n = minetest.env:get_node(pos1).name
-				local l = minetest.env:get_node(pos4).name
-				local d = minetest.env:get_node(pos3).name
---				local u = minetest.env:get_node(pos2).name
-				if n== blocco and  u== bloccosu and l== bloccolargo and d==bloccodeep and flag==0 and math.random(1,numerone)==1 then
-					minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
-					--minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
-					flag=1
-				end
-			end
-		end
-	end
-	]]--
+--Codice di riempimento sotto i formicai: deve scorrere tutti i blocchi per 30 almeno e mettere dirt ogni volta
 
 
-
---(nome della costruzione, numerone (tra 1 e numerone viene fatto il math.random), blocco sul quale viene messa la schematica, distanza a cui verrà calcolato bloccogiù, bloccogiù (serve per mettere le schematiche in luoghi pianeggianti), deep è il numero di un nesimo blocco sopra la pos1 per mettere le costruzioni profonde, bloccodeep è il blocco in alto, raggio in cui cerca i blocchi simili, blocco simile da trovare)
-nssb_register_buildings ('spiaggiagranchius', 1, "default:sand", 3, "default:sand", 2, "air",  3, "air")
-nssb_register_buildings ('acquagranchius', 1, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source")
-nssb_register_buildings ('ooteca', 1, "default:dirt_with_grass",4, "default:dirt", 2, "air", 24, "default:tree")
-nssb_register_buildings ('minuscolaooteca', 3, "default:dirt_with_grass",3 , "default:dirt", 2, "air", 24, "default:tree")
-nssb_register_buildings ('piccolaooteca', 3, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "default:tree")
-nssb_register_buildings ('arcate', 1, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source")
-nssb_register_buildings ('grandepiramide', 1, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source")
-nssb_register_buildings ('collina', 3, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air")
-nssb_register_buildings ('rovine1', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree")
-nssb_register_buildings ('megaformicaio', 3, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air")
-nssb_register_buildings ('bozzoli', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree")
+--(nome della costruzione, numerone (tra 1 e numerone viene fatto il math.random), blocco sul quale viene messa la schematica, distanza a cui verrà calcolato bloccogiù, bloccogiù (serve per mettere le schematiche in luoghi pianeggianti), deep è il numero di un nesimo blocco sopra la pos1 per mettere le costruzioni profonde, bloccodeep è il blocco in alto, raggio in cui cerca i blocchi simili, blocco simile da trovare, misura del lato della schematica sotto cui mettere dirt)
+nssb_register_buildings ('spiaggiagranchius', 1, "default:sand", 3, "default:sand", 2, "air",  3, "air", 0)
+nssb_register_buildings ('acquagranchius', 1, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source", 0)
+nssb_register_buildings ('ooteca', 1, "default:dirt_with_grass",4, "default:dirt", 2, "air", 24, "default:tree", 8)
+nssb_register_buildings ('minuscolaooteca', 3, "default:dirt_with_grass",3 , "default:dirt", 2, "air", 24, "default:tree", 3)
+nssb_register_buildings ('piccolaooteca', 3, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "default:tree", 4)
+nssb_register_buildings ('arcate', 1, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source",0)
+nssb_register_buildings ('grandepiramide', 1, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source", 0)
+nssb_register_buildings ('collina', 3, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air", 16)
+nssb_register_buildings ('rovine1', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree", 10)
+nssb_register_buildings ('megaformicaio', 1, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 3, "air", 26)
+nssb_register_buildings ('bozzoli', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree", 8)
 --nssb_register_buildings ('rovine2', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree") (bisogna farla saltare fuori -8 blocchi sotto pos1... ma come?)
 
 
