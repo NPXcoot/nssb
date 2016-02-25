@@ -260,11 +260,11 @@ function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep,
 				k = math.random(minp.z, maxp.z)
 				local pos1={x=i, y=j, z=k}
 				local n = minetest.env:get_node(pos1).name
-				if minetest.find_node_near(pos1, lato, "default:lava_source")or flag==1 then
+				if minetest.find_node_near(pos1, raggio, "default:lava_source")or flag==1 then
 					minetest.chat_send_all("Trovata la lava, esco")
 					return
 				else
-					if n=="default:stone" then
+					if n=="default:stone" and minetest.find_node_near(pos1, raggio, "default:jungletree") then
 						minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
 						flag=1
 						minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
@@ -285,18 +285,21 @@ nssb_register_buildings ('piccolaooteca', 6, "default:dirt_with_grass", 2, "defa
 nssb_register_buildings ('arcate', 4, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source",0, false, nil)
 nssb_register_buildings ('grandepiramide', 4, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source", 0, false, nil)
 nssb_register_buildings ('collina', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air", 12, false, nil)
-nssb_register_buildings ('rovine1', 4, "default:dirt_with_grass", 3, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
-nssb_register_buildings ('rovine2', 1, "default:stone", 0, "air",  0, "air", 0, "air", 5, true, -8)
 nssb_register_buildings ('megaformicaio', 6, "default:dirt_with_grass", 4, "default:dirt", 2, "air", 3, "air", 25, false, nil)
+nssb_register_buildings ('rovine1', 4, "default:dirt_with_grass", 3, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
+nssb_register_buildings ('rovine2', 1, "default:stone", 0, "air",  0, "air", 24, "default:jungletree", 5, true, -8)
 nssb_register_buildings ('rovine3', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
 nssb_register_buildings ('rovine4', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
 nssb_register_buildings ('rovine5', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
 nssb_register_buildings ('rovine6', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
 nssb_register_buildings ('rovine7', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
+nssb_register_buildings ('rovine8', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
+nssb_register_buildings ('rovine9', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
+nssb_register_buildings ('rovine10', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
 nssb_register_buildings ('bozzoli', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil)
---nssb_register_buildings ('blocohouse', 1, "default:stone", 0, "air",  0, "air", 0, "air", 5, true, -30) --alcuni parametri sono messi a caso, tanto non vengono untilizzati se la schematic deve essere spawnata sottoterra.
---nssb_register_buildings ('rovine2', 1, "default:dirt_with_grass", 3, "default:dirt",  12, "default:jungle_leaves", 24, "default:jungle_tree") (bisogna farla saltare fuori -8 blocchi sotto pos1... ma come?)
-
+nssb_register_buildings ('blocohouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -10) --alcuni parametri sono messi a caso, tanto non vengono untilizzati se la schematic deve essere spawnata sottoterra.
+nssb_register_buildings ('bigblocohouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -20) 
+nssb_register_buildings ('blocobiggesthouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -30) 
 
 --Eggs
 
