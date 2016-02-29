@@ -290,8 +290,8 @@ nssb_register_buildings ('acquagranchius', 2, "default:sand", 3, "default:sand",
 nssb_register_buildings ('ooteca', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 24, "default:tree", 8, false, nil, false)
 nssb_register_buildings ('minuscolaooteca', 6, "default:dirt_with_grass",3 , "default:dirt", 2, "air", 24, "default:tree", 2, false, nil, false)
 nssb_register_buildings ('piccolaooteca', 6, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "default:tree", 4, false, nil, false)
-nssb_register_buildings ('arcate', 4, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source",0, false, nil, false)
-nssb_register_buildings ('grandepiramide', 4, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source", 0, false, nil, false)
+nssb_register_buildings ('arcate', 8, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source",0, false, nil, false)
+nssb_register_buildings ('grandepiramide', 8, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source", 0, false, nil, false)
 nssb_register_buildings ('collina', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air", 12, false, nil, false)
 nssb_register_buildings ('megaformicaio', 6, "default:dirt_with_grass", 4, "default:dirt", 2, "air", 3, "air", 25, false, nil, false)
 nssb_register_buildings ('rovine1', 4, "default:dirt_with_grass", 3, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
@@ -308,9 +308,9 @@ nssb_register_buildings ('bozzoli', 4, "default:dirt_with_grass", 1, "default:di
 nssb_register_buildings ('blocohouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -10, false) --alcuni parametri sono messi a caso, tanto non vengono untilizzati se la schematic deve essere spawnata sottoterra.
 nssb_register_buildings ('bigblocohouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -20, false) 
 nssb_register_buildings ('blocobiggesthouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -30, false) 
-nssb_register_buildings ('picco', 1, "default:desert_stone", 1, "default:desert_stone",  1, "air", 3, "default:ice", 5, false, nil, false) 
-nssb_register_buildings ('piccoghiaccio', 1, "default:ice", 1, "default:ice",  1, "air", 3, "default:ice", 5, false, nil, true) 
-nssb_register_buildings ('icehall', 1, "default:ice", 1, "default:ice",  1, "air", 3, "default:ice", 5, false, nil, true) 
+nssb_register_buildings ('picco', 10, "default:desert_stone", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false) 
+nssb_register_buildings ('piccoghiaccio', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true) 
+nssb_register_buildings ('icehall', 8, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true) 
 
 
 --Eggs
