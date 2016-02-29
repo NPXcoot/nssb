@@ -400,4 +400,5 @@ end
 nssb_register_eggboss ('phoenix', 'Phoenix', 900, 10, 1, "air", 15)
 nssb_register_eggboss ('tarantula', 'Tarantula', 900, 2, 1, "air", 5)
 nssb_register_eggboss ('night_master', 'Night Master', 900, 10, 1, "air", 0)
+nssb_register_eggboss ('ant_queen', 'Ant Queen', 900, 10, 1, "air", 5)
 nssb_register_eggboss ('icelamander', 'Icelamander', 900, 10, 1, "air", 5)
