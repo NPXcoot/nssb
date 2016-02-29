@@ -310,7 +310,7 @@ function nssb_register_eggs (name, descr, int, wide, troppi, neigh)
 		tiles = {name .."_eggs.png"},
 		light_source = 5,
 		is_ground_content = false,
-		groups = {snappy=1},
+		groups = {choppy=1},
 	})
 
 
@@ -343,7 +343,47 @@ nssb_register_eggs ('larva', 'Larva', 16, 2, 4, "air")
 nssb_register_eggs ('crab', 'Crab', 18, 2, 4, "default:sand")
 nssb_register_eggs ('black_widow', 'Black Widow', 18, 2, 4, "air")
 nssb_register_eggs ('uloboros', 'Uloboros', 18, 2, 4, "air")
-nssb_register_eggs ('tarantula', 'Tarantula', 18, 2, 1, "air")
 nssb_register_eggs ('daddy_long_legs', 'Daddy Long Legs', 18, 2, 4, "air")
 nssb_register_eggs ('xgaloctopus', 'Xgaloctopus', 18, 2, 4, "default:water_source")
 nssb_register_eggs ('bloco', 'Bloco', 14, 2, 4)
+
+
+--eggboss
+
+function nssb_register_eggboss (nam, desc, interv, wid, tropp, neig, lumin)
+
+	minetest.register_node("nssb:".. nam .."_eggboss", {
+		description = desc .." Egg",
+		tiles = {nam .."_eggboss.png"},
+		light_source = lumin,
+		is_ground_content = false,
+		groups = {choppy=1},
+	})
+
+
+	minetest.register_abm({
+	nodenames = {"nssb:".. nam .."_eggboss"},
+	neighbors = {neig},
+	interval = interv,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		local pos1 = {x=pos.x+math.random(-wid,wid), y=pos.y+0.5, z=pos.z+math.random(-wid,wid)}
+		local n = minetest.env:get_node(pos1).name
+		if n ~= "air" and n ~= "default:water_source" then
+			return
+		end
+		local count = 0
+		for _,ent in pairs(minetest.get_objects_inside_radius(pos, 6)) do
+			count = count + 1
+		end
+		if count < tropp then
+			minetest.add_entity(pos1, "nssm:" .. nam)
+		end
+	end
+	})
+
+end
+
+nssb_register_eggboss ('phoenix', 'Phoenix', 900, 10, 1, "air", 15)
+nssb_register_eggboss ('tarantula', 'Tarantula', 900, 2, 1, "air", 5)
+nssb_register_eggboss ('night_master', 'Night Master', 900, 10, 1, "air", 0)
