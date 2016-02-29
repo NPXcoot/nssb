@@ -1,7 +1,5 @@
 --Nssb
 --Materials
---Gioforchio caro, mancano i vari Bloco fabbricati! I bozzoli che droppino vari oggetti tipo armi o cose del genere o può far spawnare ragni (sembra divertente!), da far spawnare rovine 2 se riesci e poi commentare il codice e scrivere il readme! O dici che non è abbastanza di impatto per la prima release? La 0.1 in Wip mods! Potremmo fare un altro trailer!!!
-
 minetest.register_node("nssb:mossy_stone_brick", {
 	description = "Mossy Stone Brick",
 	tiles = {"mossy_stone_brick.png"},
@@ -176,31 +174,38 @@ minetest.register_node("nssb:web_cone_down", {
 	groups = {flammable=2, snappy=1, liquid=1},
 })
 
+
 minetest.register_node("nssb:web_cocoon", {
 	description = "Web Cocoon",
 	tiles = {"web_cocoon.png"},
-	--ho provato, ma ho fallito durissimooooooooo!!!!
-	--[[local dro = math.random(1,4)
-	if dro == 1 then
-		drop = "nssm:ant_sword",
-	elseif dro == 2 then
-		drop = "nssm:mantis_sword",
-	elseif dro == 3 then
-		drop = "nssm:crab_light_mace",
-	elseif dro == 4 then
-		drop = "nssm:masticone_fang_sword",]]
+	drop = {
+         max_items = 1,
+         items = {
+             {
+                 items = {'node "nssm:ant_sword" 1'},
+                 rarity = 4
+             },
+             {
+                 items = {'node "nssm:mantis_sword" 1'},
+				 rarity = 4
+             },
+			 {
+                 items = {'node "nssm:crab_light_mace" 1'},
+				 rarity = 4
+             },
+			 {
+                 items = {'node "nssm:masticone_fang_sword" 1'},
+				 rarity = 4
+             }
+         }
+    },
 	is_ground_content = false,
 	groups = {snappy=1, flammable=2},
 })
 
-
-
-
-
-
 --schematichs generation
 
-function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep, bloccodeep, raggio, near, lato, underground, height, ice)
+function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep, bloccodeep, raggio, near, lato, underground, height, ice, exact_height) --exact_height=exact_eight under the surface in the correct place
 
 	minetest.register_on_generated(function(minp, maxp, seed)
 		if underground==false then
@@ -249,33 +254,31 @@ function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep,
 			end
 		else	--underground==true
 			if minp.y<0 then
-				--minetest.chat_send_all("Siamo sottoterra")
-				minetest.chat_send_all("Posmin: "..(minetest.pos_to_string(minp)).." Posmax: "..(minetest.pos_to_string(maxp)))
-				local i, j, k
+				--minetest.chat_send_all("Posmin: "..(minetest.pos_to_string(minp)).." Posmax: "..(minetest.pos_to_string(maxp)))
+				local i, jj, k
 				local flag=0
-				if height~=nil then
-					if height>minp.y and height<maxp.y then
-						minetest.chat_send_all("Siamo all'altezza giusta")
-						j=height
-					else
-						minetest.chat_send_all("Non siamo all'altezza giusta, esco")
-						return
-					end
-				else
-					j = math.random(minp.y, maxp.y)
-				end
+
 				i = math.random(minp.x, maxp.x)
 				k = math.random(minp.z, maxp.z)
+				jj = math.random(minp.y, maxp.y)
+				if height~=nil then
+					if maxp.y>height then
+						j=jj
+					else
+						j=math.random(minp.y, jj)
+					end
+				else
+					j = jj
+				end
 				local pos1={x=i, y=j, z=k}
 				local n = minetest.env:get_node(pos1).name
 				if minetest.find_node_near(pos1, raggio, "default:lava_source")or flag==1 then
-					minetest.chat_send_all("Trovata la lava, esco")
 					return
 				else
-					if n=="default:stone" and minetest.find_node_near(pos1, raggio, "default:jungletree") then
+					if n==blocco and math.random(1,numerone)==1 then
 						minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
 						flag=1
-						minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
+						--minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
 					end
 				end
 			end
@@ -285,32 +288,33 @@ end
 
 
 --(nome della costruzione, numerone (tra 1 e numerone viene fatto il math.random), blocco sul quale viene messa la schematica, distanza a cui verr� calcolato bloccogi�, bloccogi� (serve per mettere le schematiche in luoghi pianeggianti), deep � il numero di un n-esimo blocco sopra la pos1 per mettere le costruzioni profonde, bloccodeep � il blocco in alto, raggio in cui cerca i blocchi simili, blocco simile da trovare, misura del lato della schematica sotto cui mettere dirt)
-nssb_register_buildings ('spiaggiagranchius', 2, "default:sand", 3, "default:sand", 2, "air",  3, "air", 0, false, nil, false)
-nssb_register_buildings ('acquagranchius', 2, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source", 0, false, nil, false)
-nssb_register_buildings ('ooteca', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 24, "default:tree", 8, false, nil, false)
-nssb_register_buildings ('minuscolaooteca', 6, "default:dirt_with_grass",3 , "default:dirt", 2, "air", 24, "default:tree", 2, false, nil, false)
-nssb_register_buildings ('piccolaooteca', 6, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "default:tree", 4, false, nil, false)
-nssb_register_buildings ('arcate', 8, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source",0, false, nil, false)
-nssb_register_buildings ('grandepiramide', 8, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source", 0, false, nil, false)
-nssb_register_buildings ('collina', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air", 12, false, nil, false)
-nssb_register_buildings ('megaformicaio', 6, "default:dirt_with_grass", 4, "default:dirt", 2, "air", 3, "air", 25, false, nil, false)
-nssb_register_buildings ('rovine1', 4, "default:dirt_with_grass", 3, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('rovine2', 1, "default:stone", 0, "air",  0, "air", 24, "default:jungletree", 5, true, -8, false)
-nssb_register_buildings ('rovine3', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('rovine4', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('rovine5', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('rovine6', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('rovine7', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('rovine8', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('rovine9', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('rovine10', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('bozzoli', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false)
-nssb_register_buildings ('blocohouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -10, false) --alcuni parametri sono messi a caso, tanto non vengono untilizzati se la schematic deve essere spawnata sottoterra.
-nssb_register_buildings ('bigblocohouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -20, false) 
-nssb_register_buildings ('blocobiggesthouse', 1, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -30, false) 
-nssb_register_buildings ('picco', 10, "default:desert_stone", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false) 
-nssb_register_buildings ('piccoghiaccio', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true) 
-nssb_register_buildings ('icehall', 8, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true) 
+nssb_register_buildings ('spiaggiagranchius', 2, "default:sand", 3, "default:sand", 2, "air",  3, "air", 0, false, nil, false, false)
+nssb_register_buildings ('acquagranchius', 2, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source", 0, false, nil, false, false)
+nssb_register_buildings ('ooteca', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 24, "default:tree", 8, false, nil, false, false)
+nssb_register_buildings ('minuscolaooteca', 6, "default:dirt_with_grass",3 , "default:dirt", 2, "air", 24, "default:tree", 2, false, nil, false, false)
+nssb_register_buildings ('piccolaooteca', 6, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "default:tree", 4, false, nil, false, false)
+nssb_register_buildings ('arcate', 8, "default:sand", 3, "default:sand", 13, "default:water_source", 3, "default:water_source",0, false, nil, false, false)
+nssb_register_buildings ('grandepiramide', 8, "default:dirt", 3, "default:dirt", 20, "default:water_source", 3, "default:water_source", 0, false, nil, false, false)
+nssb_register_buildings ('collina', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air", 12, false, nil, false, false)
+nssb_register_buildings ('megaformicaio', 6, "default:dirt_with_grass", 4, "default:dirt", 2, "air", 3, "air", 25, false, nil, false, false)
+nssb_register_buildings ('antqueenhill', 7, "default:dirt_with_grass", 4, "default:dirt", 2, "air", 3, "air", 21, false, nil, false, false)
+nssb_register_buildings ('rovine1', 4, "default:dirt_with_grass", 3, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+--nssb_register_buildings ('rovine2', 1, "default:stone", 0, "air",  0, "air", 24, "default:jungletree", 5, true, -8, false, false)
+nssb_register_buildings ('rovine3', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine4', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine5', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine6', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine7', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine8', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine9', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine10', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('bozzoli', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('blocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -10, false, false) --alcuni parametri sono messi a caso, tanto non vengono untilizzati se la schematic deve essere spawnata sottoterra.
+nssb_register_buildings ('bigblocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -20, false, false)
+nssb_register_buildings ('blocobiggesthouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -30, false, false)
+nssb_register_buildings ('picco', 10, "default:desert_stone", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false, false)
+nssb_register_buildings ('piccoghiaccio', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
+nssb_register_buildings ('icehall', 8, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
 
 
 --Eggs
