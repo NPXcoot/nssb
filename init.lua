@@ -175,6 +175,7 @@ minetest.register_node("nssb:web_cone_down", {
 })
 
 
+
 minetest.register_node("nssb:web_cocoon", {
 	description = "Web Cocoon",
 	tiles = {"web_cocoon.png"},
@@ -183,19 +184,81 @@ minetest.register_node("nssb:web_cocoon", {
          items = {
              {
                  items = {'node "nssm:ant_sword" 1'},
-                 rarity = 4
+                 rarity = 20
+             },
+			 {
+                 items = {'node "nssm:sun_sword" 1'},
+                 rarity = 100
+             },
+			 {
+                 items = {'node "nssm:night_sword" 1'},
+                 rarity = 100
+             },
+			 {
+                 items = {'node "nssm:spear_ant" 1'},
+                 rarity = 20
+             },
+			 {
+                 items = {'node "nssm:spear_mantis" 1'},
+                 rarity = 20
+             },
+			 {
+                 items = {'node "nssm:spear_manticore" 1'},
+                 rarity = 22
+             },
+			 {
+                 items = {'node "nssm:spear_little_ice_tooth" 1'},
+                 rarity = 20
+             },
+			 {
+                 items = {'node "nssm:spear_duck_beak" 1'},
+                 rarity = 20
+             },
+			 {
+                 items = {'node "default:sword_wood" 1'},
+                 rarity = 14
+             },
+			 {
+                 items = {'node "default:sword_steel" 1'},
+                 rarity = 20
+             },{
+                 items = {'node "default:sword_mese" 1'},
+                 rarity = 20
+             },{
+                 items = {'node "default:axe_bronze" 1'},
+                 rarity = 20
+             },
+			 {
+                 items = {'node "nssm:spider_leg" 6'},
+                 rarity = 10
+             },
+			 {
+                 items = {'node "nssm:raw_scrausics_wing" 2'},
+                 rarity = 20
+             },
+			 {
+                 items = {'node "nssm:nssm:mantis_claw" 1'},
+                 rarity = 20
+             },
+			 {
+                 items = {'node "default:axe_mese" 1'},
+                 rarity = 20
              },
              {
                  items = {'node "nssm:mantis_sword" 1'},
-				 rarity = 4
+				 rarity = 20
+             },
+			 {
+                 items = {'node "default:axe_steel" 1'},
+                 rarity = 20
              },
 			 {
                  items = {'node "nssm:crab_light_mace" 1'},
-				 rarity = 4
+				 rarity = 20
              },
 			 {
                  items = {'node "nssm:masticone_fang_sword" 1'},
-				 rarity = 4
+				 rarity = 20
              }
          }
     },
@@ -255,7 +318,7 @@ function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep,
 		else	--underground==true
 			if minp.y<0 then
 				--minetest.chat_send_all("Posmin: "..(minetest.pos_to_string(minp)).." Posmax: "..(minetest.pos_to_string(maxp)))
-				local i, jj, k
+				local i, jj, k, j
 				local flag=0
 
 				i = math.random(minp.x, maxp.x)
