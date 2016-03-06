@@ -375,9 +375,13 @@ nssb_register_buildings ('bozzoli', 4, "default:dirt_with_grass", 1, "default:di
 nssb_register_buildings ('blocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -10, false, false) --alcuni parametri sono messi a caso, tanto non vengono untilizzati se la schematic deve essere spawnata sottoterra.
 nssb_register_buildings ('bigblocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -20, false, false)
 nssb_register_buildings ('blocobiggesthouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -30, false, false)
-nssb_register_buildings ('picco', 10, "default:desert_stone", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false, false)
+nssb_register_buildings ('picco', 10, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false, false)
 nssb_register_buildings ('piccoghiaccio', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
 nssb_register_buildings ('icehall', 8, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
+nssb_register_buildings ('piccomoonheron', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
+nssb_register_buildings ('doppiopiccoghiaccio', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
+nssb_register_buildings ('doppiopiccosabbia', 10, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false, false)
+nssb_register_buildings ('piccoscrausics', 10, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false, false)
 
 
 --Eggs
@@ -427,6 +431,9 @@ nssb_register_eggs ('xgaloctopus', 'Xgaloctopus', 18, 2, 4, "default:water_sourc
 nssb_register_eggs ('bloco', 'Bloco', 14, 2, 4, "default:gravel")
 nssb_register_eggs ('icesnake', 'Icesnake', 18, 2, 4, "default:ice")
 nssb_register_eggs ('snow_biter', 'Snowbiter', 18, 2, 4, "default:ice")
+nssb_register_eggs ('scrausics', 'Scrausics', 18, 2, 4, "air")
+nssb_register_eggs ('moonheron', 'Moonheron', 18, 2, 4, "air")
+
 
 --eggboss
 
