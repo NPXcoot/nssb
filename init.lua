@@ -268,7 +268,21 @@ minetest.register_node("nssb:web_cocoon", {
 
 --schematichs generation
 
-function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep, bloccodeep, raggio, near, lato, underground, height, ice, exact_height) --exact_height=exact_eight under the surface in the correct place
+function nssb_register_buildings(
+	build,			--name of the schematic
+	numerone,		--1/numerone is the probability of the spawning of the schematic if the place found is acceptable
+	blocco,			--the block on which the schematic need to spawn
+	giu,
+	bloccogiu,
+	deep,
+	bloccodeep,
+	raggio,
+	near,
+	lato,
+	underground,	--if true the schematic need to spawn underground
+	height,			--under this heigh the schematic can spawn. If nil the schematic can spawn everywhere underground
+	ice,
+	exact_height) 	--exact_height=exact_eight under the surface in the correct place
 
 	minetest.register_on_generated(function(minp, maxp, seed)
 		if underground==false then
@@ -325,13 +339,17 @@ function nssb_register_buildings (build, numerone, blocco, giu, bloccogiu, deep,
 				k = math.random(minp.z, maxp.z)
 				jj = math.random(minp.y, maxp.y)
 				if height~=nil then
-					if maxp.y>height then
-						j=jj
+					if height>maxp.y then
+						j = jj
+					elseif height>minp.y and height<maxp.y then
+						j = math.random(minp.y, height)
 					else
-						j=math.random(minp.y, jj)
+						return
 					end
 				else
-					j = jj
+					if jj>0 then
+						j = math.random(minp.y, 0)
+					end
 				end
 				local pos1={x=i, y=j, z=k}
 				local n = minetest.env:get_node(pos1).name
