@@ -182,6 +182,14 @@ minetest.register_node("nssb:web_cocoon", {
 	drop = {
          max_items = 1,
          items = {
+			{
+                 items = {'node "nssm:spider_leg" 2'},
+                 rarity = 4
+             },
+			  {
+                 items = {'node "nssm:web 1'},
+                 rarity = 4
+             },
              {
                  items = {'node "nssm:ant_sword" 1'},
                  rarity = 20
@@ -229,10 +237,6 @@ minetest.register_node("nssb:web_cocoon", {
                  rarity = 20
              },
 			 {
-                 items = {'node "nssm:spider_leg" 6'},
-                 rarity = 10
-             },
-			 {
                  items = {'node "nssm:raw_scrausics_wing" 2'},
                  rarity = 20
              },
@@ -268,21 +272,22 @@ minetest.register_node("nssb:web_cocoon", {
 
 --schematichs generation
 
+
 function nssb_register_buildings(
-	build,			--name of the schematic
-	numerone,		--1/numerone is the probability of the spawning of the schematic if the place found is acceptable
-	blocco,			--the block on which the schematic need to spawn
-	giu,
-	bloccogiu,
-	deep,
-	bloccodeep,
-	raggio,
-	near,
-	lato,
-	underground,	--if true the schematic need to spawn underground
-	height,			--under this heigh the schematic can spawn. If nil the schematic can spawn everywhere underground
-	ice,
-	exact_height) 	--exact_height=exact_eight under the surface in the correct place
+	build,			-- name of the schematic
+	rand,			-- 1/rand is the probability of the spawning of the schematic if the place found is acceptable
+	posschem,		-- the block on which the schematic need to be to spawn
+	down,			-- useful in finding flat surfaces, giù indetify the x and z coordinates of a block 1 under posschem
+	downblock,		-- the block that is necessary to find in down to place the schematic
+	above,			-- when you need to place the schem under something (water, air, jungleleaves...) above is the number of blocks above posschem
+	aboveblock,		-- the name of this block above above-times posschem
+	radius,			-- the radius in which the function search for the "near" block
+	near,			-- the block that is necessary to spawn the schem in the radius
+	side,			-- the mesure of the side of the schematics, it is necessary to put the dirt under it
+	underground,	-- if true the schematic need to spawn underground
+	height,			-- under this heigh the schematic can spawn. If nil the schematic can spawn everywhere underground
+	ice,			-- if true fill the space under the scem with ice and not with dirt as standard
+	exact_height) 	-- exact_height=exact_eight under the surface in the correct place
 
 	minetest.register_on_generated(function(minp, maxp, seed)
 		if underground==false then
@@ -293,13 +298,13 @@ function nssb_register_buildings(
 			k = math.random(minp.z, maxp.z)
 			for j=minp.y,maxp.y do
 				local pos1 = {x=i, y=j, z=k}
-				local pos2 = {x=i+giu, y=j-1, z=k+giu}
-				local pos3 = {x=i, y=j+deep, z=k}
+				local pos2 = {x=i+down, y=j-1, z=k+down}
+				local pos3 = {x=i, y=j+above, z=k}
 				local n = minetest.env:get_node(pos1).name
 				local d = minetest.env:get_node(pos3).name
 				local u = minetest.env:get_node(pos2).name
-				if n== blocco and u== bloccogiu and d==bloccodeep and flag==0 and math.random(1,numerone)==1 then
-					if minetest.find_node_near(pos3, raggio, near) then
+				if n== posschem and u== downblock and d==aboveblock and flag==0 and math.random(1,rand)==1 then
+					if minetest.find_node_near(pos3, radius, near) then
 							minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
 							--minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
 							posd=pos1
@@ -307,9 +312,9 @@ function nssb_register_buildings(
 					end
 				end
 			end
-			if flag==1 and lato>0 then
-				for dx = 0,lato do
-					for dz = 0,lato do
+			if flag==1 and side>0 then
+				for dx = 0,side do
+					for dz = 0,side do
 						local dy=posd.y-1
 						local f = {x = posd.x+dx, y=dy, z=posd.z+dz}
 						local fg = minetest.env:get_node(f).name
@@ -353,10 +358,10 @@ function nssb_register_buildings(
 				end
 				local pos1={x=i, y=j, z=k}
 				local n = minetest.env:get_node(pos1).name
-				if minetest.find_node_near(pos1, raggio, "default:lava_source")or flag==1 then
+				if minetest.find_node_near(pos1, radius, "default:lava_source")or flag==1 then
 					return
 				else
-					if n==blocco and math.random(1,numerone)==1 then
+					if n==posschem and math.random(1,rand)==1 then
 						minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
 						flag=1
 						--minetest.chat_send_all("Added schematic in "..(minetest.pos_to_string(pos1)))
@@ -368,7 +373,7 @@ function nssb_register_buildings(
 end
 
 
---(nome della costruzione, numerone (tra 1 e numerone viene fatto il math.random), blocco sul quale viene messa la schematica, distanza a cui verr� calcolato bloccogi�, bloccogi� (serve per mettere le schematiche in luoghi pianeggianti), deep � il numero di un n-esimo blocco sopra la pos1 per mettere le costruzioni profonde, bloccodeep � il blocco in alto, raggio in cui cerca i blocchi simili, blocco simile da trovare, misura del lato della schematica sotto cui mettere dirt)
+
 nssb_register_buildings ('spiaggiagranchius', 2, "default:sand", 3, "default:sand", 2, "air",  3, "air", 0, false, nil, false, false)
 nssb_register_buildings ('acquagranchius', 3, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source", 0, false, nil, false, false)
 nssb_register_buildings ('ooteca', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 24, "default:tree", 8, false, nil, false, false)
@@ -390,21 +395,27 @@ nssb_register_buildings ('rovine8', 4, "default:dirt_with_grass", 1, "default:di
 nssb_register_buildings ('rovine9', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
 nssb_register_buildings ('rovine10', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
 nssb_register_buildings ('bozzoli', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('blocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -10, false, false) --alcuni parametri sono messi a caso, tanto non vengono untilizzati se la schematic deve essere spawnata sottoterra.
+nssb_register_buildings ('blocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -10, false, false)
 nssb_register_buildings ('bigblocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -20, false, false)
 nssb_register_buildings ('blocobiggesthouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -30, false, false)
-nssb_register_buildings ('picco', 10, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false, false)
-nssb_register_buildings ('piccoghiaccio', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
-nssb_register_buildings ('icehall', 8, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
-nssb_register_buildings ('piccomoonheron', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
-nssb_register_buildings ('doppiopiccoghiaccio', 10, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 5, false, nil, true, false)
-nssb_register_buildings ('doppiopiccosabbia', 10, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false, false)
-nssb_register_buildings ('piccoscrausics', 10, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 5, false, nil, false, false)
+nssb_register_buildings ('picco', 12, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 10, false, nil, false, false)
+nssb_register_buildings ('piccoghiaccio', 12, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 10, false, nil, true, false)
+nssb_register_buildings ('icehall', 8, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 30, false, nil, true, false)
+nssb_register_buildings ('piccomoonheron', 8, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 3, false, nil, true, false)
+nssb_register_buildings ('doppiopiccoghiaccio', 11, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 7, false, nil, true, false)
+nssb_register_buildings ('doppiopiccosabbia', 11, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 7, false, nil, false, false)
+nssb_register_buildings ('piccoscrausics', 8, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 3, false, nil, false, false)
 
 
 --Eggs
 
-function nssb_register_eggs (name, descr, int, wide, troppi, neigh)
+function nssb_register_eggs (
+name, -- name of the mobs and the eggs
+descr, -- Description of the mob and eggs
+int, -- time interval between each birth
+wide, -- the radius in wich mobs are generated
+troppi, -- maximun number of mobs spawned (not working)
+neigh) -- block that need to be near for spawning the mobs
 
 	minetest.register_node("nssb:".. name .."_eggs", {
 		description = descr .." Eggs",
@@ -455,7 +466,7 @@ nssb_register_eggs ('moonheron', 'Moonheron', 18, 2, 4, "air")
 
 --eggboss
 
-function nssb_register_eggboss (nam, desc, interv, wid, tropp, neig, lumin)
+function nssb_register_eggboss (nam, desc, interv, wid, tropp, neig, lumin) -- the parameters are the same of the others, lumin is the luminosity of the eggs!
 
 	minetest.register_node("nssb:".. nam .."_eggboss", {
 		description = desc .." Egg",
