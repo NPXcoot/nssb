@@ -32,7 +32,6 @@ minetest.register_node("nssb:stone_column", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
-
 minetest.register_node("nssb:marine_stone", {
 	description = "Seastone",
 	tiles = {"marine_stone.png"},
@@ -174,8 +173,6 @@ minetest.register_node("nssb:web_cone_down", {
 	groups = {flammable=2, snappy=1, liquid=1},
 })
 
-
-
 minetest.register_node("nssb:web_cocoon", {
 	description = "Web Cocoon",
 	tiles = {"web_cocoon.png"},
@@ -272,21 +269,20 @@ minetest.register_node("nssb:web_cocoon", {
 
 --schematichs generation
 
-
 function nssb_register_buildings(
 	build,			-- name of the schematic
 	rand,			-- 1/rand is the probability of the spawning of the schematic if the place found is acceptable
 	posschem,		-- the block on which the schematic need to be to spawn
-	down,			-- useful in finding flat surfaces, giù indetify the x and z coordinates of a block 1 under posschem
+	down,			-- useful in finding flat surfaces, down indetify the x and z coordinates of a block 1 under posschem
 	downblock,		-- the block that is necessary to find in down to place the schematic
 	above,			-- when you need to place the schem under something (water, air, jungleleaves...) above is the number of blocks above posschem
 	aboveblock,		-- the name of this block above above-times posschem
 	radius,			-- the radius in which the function search for the "near" block
 	near,			-- the block that is necessary to spawn the schem in the radius
-	side,			-- the mesure of the side of the schematics, it is necessary to put the dirt under it
+	side,			-- the mesure of the side of the schematic, it is necessary to put the dirt under it
 	underground,	-- if true the schematic need to spawn underground
 	height,			-- under this heigh the schematic can spawn. If nil the schematic can spawn everywhere underground
-	ice,			-- if true fill the space under the scem with ice and not with dirt as standard
+	ice,			-- if true fill the space under the schem with ice and not with dirt as standard
 	exact_height) 	-- exact_height=exact_eight under the surface in the correct place
 
 	minetest.register_on_generated(function(minp, maxp, seed)
@@ -301,8 +297,14 @@ function nssb_register_buildings(
 				local pos2 = {x=i+down, y=j-1, z=k+down}
 				local pos3 = {x=i, y=j+above, z=k}
 				local n = minetest.env:get_node(pos1).name
-				local d = minetest.env:get_node(pos3).name
 				local u = minetest.env:get_node(pos2).name
+				local d = minetest.env:get_node(pos3).name
+				if (downblock==nil) then
+					u = downblock
+				end
+				if (aboveblock==nil) then
+					d = aboveblock
+				end
 				if n== posschem and u== downblock and d==aboveblock and flag==0 and math.random(1,rand)==1 then
 					if minetest.find_node_near(pos3, radius, near) then
 							minetest.place_schematic(pos1, minetest.get_modpath("nssb").."/schems/".. build ..".mts", "0", {}, true)
@@ -312,6 +314,7 @@ function nssb_register_buildings(
 					end
 				end
 			end
+			--Puts dirt/ice under the schematic to fill the space under it
 			if flag==1 and side>0 then
 				for dx = 0,side do
 					for dz = 0,side do
@@ -372,8 +375,6 @@ function nssb_register_buildings(
 	end)
 end
 
-
-
 nssb_register_buildings ('spiaggiagranchius', 2, "default:sand", 3, "default:sand", 2, "air",  3, "air", 0, false, nil, false, false)
 nssb_register_buildings ('acquagranchius', 3, "default:sand", 3, "default:sand", 12,"default:water_source", 3, "default:water_source", 0, false, nil, false, false)
 nssb_register_buildings ('ooteca', 6, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 24, "default:tree", 8, false, nil, false, false)
@@ -384,17 +385,17 @@ nssb_register_buildings ('grandepiramide', 8, "default:dirt", 3, "default:dirt",
 nssb_register_buildings ('collina', 5, "default:dirt_with_grass", 3, "default:dirt", 2, "air", 3, "air", 12, false, nil, false, false)
 nssb_register_buildings ('megaformicaio', 7, "default:dirt_with_grass", 4, "default:dirt", 2, "air", 3, "air", 25, false, nil, false, false)
 nssb_register_buildings ('antqueenhill', 8, "default:dirt_with_grass", 4, "default:dirt", 2, "air", 3, "air", 21, false, nil, false, false)
-nssb_register_buildings ('rovine1', 4, "default:dirt_with_grass", 3, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine1', 4, "default:dirt_with_grass", 3, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
 --nssb_register_buildings ('rovine2', 1, "default:stone", 0, "air",  0, "air", 24, "default:jungletree", 5, true, -8, false, false)
-nssb_register_buildings ('rovine3', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('rovine4', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('rovine5', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('rovine6', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('rovine7', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('rovine8', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('rovine9', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('rovine10', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
-nssb_register_buildings ('bozzoli', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 12, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine3', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine4', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine5', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine6', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine7', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine8', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine9', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('rovine10', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
+nssb_register_buildings ('bozzoli', 4, "default:dirt_with_grass", 1, "default:dirt",  2, "air", 8, "default:jungletree", 10, false, nil, false, false)
 nssb_register_buildings ('blocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -10, false, false)
 nssb_register_buildings ('bigblocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -20, false, false)
 nssb_register_buildings ('blocobiggesthouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -30, false, false)
@@ -414,13 +415,15 @@ name, -- name of the mobs and the eggs
 descr, -- Description of the mob and eggs
 int, -- time interval between each birth
 wide, -- the radius in wich mobs are generated
-troppi, -- maximun number of mobs spawned (not working)
-neigh) -- block that need to be near for spawning the mobs
+troppi, -- maximun number of mobs spawned
+neigh, -- block that need to be near for spawning the mobs
+night, --if only at night
+lumin) --luminosity parameter of the egg_block
 
 	minetest.register_node("nssb:".. name .."_eggs", {
 		description = descr .." Eggs",
 		tiles = {name .."_eggs.png"},
-		light_source = 5,
+		light_source = lumin,
 		is_ground_content = false,
 		groups = {choppy=1},
 	})
@@ -438,73 +441,45 @@ neigh) -- block that need to be near for spawning the mobs
 			return
 		end
 		local count = 0
-		for _,ent in pairs(minetest.get_objects_inside_radius(pos, 6)) do
-			count = count + 1
+
+		local objects = minetest.env:get_objects_inside_radius(pos, 12)
+		for _,obj in ipairs(objects) do
+			count = count +1
+			--minetest.chat_send_all("Count: "..count)
 		end
-		if count < troppi then
-			minetest.add_entity(pos1, "nssm:" .. name)
-		end
-	end
-	})
 
-end
-
-nssb_register_eggs ('ant_worker', 'Ant Worker', 16, 2, 4, "air")
-nssb_register_eggs ('ant_soldier', 'Ant Soldier', 16, 2, 4, "air")
-nssb_register_eggs ('larva', 'Larva', 16, 2, 4, "air")
-nssb_register_eggs ('crab', 'Crab', 18, 2, 4, "default:sand")
-nssb_register_eggs ('black_widow', 'Black Widow', 18, 2, 4, "air")
-nssb_register_eggs ('uloboros', 'Uloboros', 18, 2, 4, "air")
-nssb_register_eggs ('daddy_long_legs', 'Daddy Long Legs', 18, 2, 4, "air")
-nssb_register_eggs ('xgaloctopus', 'Xgaloctopus', 18, 2, 4, "default:water_source")
-nssb_register_eggs ('bloco', 'Bloco', 14, 2, 4, "default:gravel")
-nssb_register_eggs ('icesnake', 'Icesnake', 18, 2, 4, "default:ice")
-nssb_register_eggs ('snow_biter', 'Snowbiter', 18, 2, 4, "default:ice")
-nssb_register_eggs ('scrausics', 'Scrausics', 18, 2, 4, "air")
-nssb_register_eggs ('moonheron', 'Moonheron', 18, 2, 4, "air")
-
-
---eggboss
-
-function nssb_register_eggboss (nam, desc, interv, wid, tropp, neig, lumin) -- the parameters are the same of the others, lumin is the luminosity of the eggs!
-
-	minetest.register_node("nssb:".. nam .."_eggboss", {
-		description = desc .." Egg",
-		tiles = {nam .."_eggboss.png"},
-		light_source = lumin,
-		is_ground_content = false,
-		groups = {choppy=1},
-	})
-
-
-	minetest.register_abm({
-	nodenames = {"nssb:".. nam .."_eggboss"},
-	neighbors = {neig},
-	interval = interv,
-	chance = 1,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		local pos1 = {x=pos.x+math.random(-wid,wid), y=pos.y+0.5, z=pos.z+math.random(-wid,wid)}
-		local n = minetest.env:get_node(pos1).name
-		if n ~= "air" and n ~= "default:water_source" then
-			return
-		end
-		local count = 0
-		for _,ent in pairs(minetest.get_objects_inside_radius(pos, 6)) do
-			count = count + 1
-		end
-		if count < tropp then
-			minetest.add_entity(pos1, "nssm:" .. nam)
+		local t = minetest.get_timeofday()
+		--minetest.chat_send_all("Time of day: "..t)
+		if (t>=0.75 and t<=1) or (t>=0 and t<=0.25) or night==false then
+			if count < troppi then
+				minetest.add_entity(pos1, "nssm:" .. name)
+			end
 		end
 	end
 	})
 
 end
 
-nssb_register_eggboss ('phoenix', 'Phoenix', 900, 10, 1, "air", 15)
-nssb_register_eggboss ('tarantula', 'Tarantula', 900, 2, 1, "air", 5)
-nssb_register_eggboss ('night_master', 'Night Master', 900, 10, 1, "air", 0)
-nssb_register_eggboss ('ant_queen', 'Ant Queen', 900, 10, 1, "air", 5)
-nssb_register_eggboss ('icelamander', 'Icelamander', 900, 10, 1, "air", 5)
+nssb_register_eggs ('ant_worker', 'Ant Worker', 16, 2, 4, "air", false, 5)
+nssb_register_eggs ('ant_soldier', 'Ant Soldier', 16, 2, 4, "air", false, 5)
+nssb_register_eggs ('larva', 'Larva', 16, 2, 4, "air", false, 5)
+nssb_register_eggs ('crab', 'Crab', 18, 2, 4, "default:sand", false, 5)
+nssb_register_eggs ('black_widow', 'Black Widow', 18, 2, 4, "air", false, 5)
+nssb_register_eggs ('uloboros', 'Uloboros', 18, 2, 4, "air", false, 5)
+nssb_register_eggs ('daddy_long_legs', 'Daddy Long Legs', 18, 2, 4, "air", false, 5)
+nssb_register_eggs ('xgaloctopus', 'Xgaloctopus', 18, 2, 4, "default:water_source", false, 5)
+nssb_register_eggs ('bloco', 'Bloco', 14, 2, 4, "default:gravel", false, 5)
+nssb_register_eggs ('icesnake', 'Icesnake', 18, 2, 4, "default:ice", false, 5)
+nssb_register_eggs ('snow_biter', 'Snowbiter', 18, 2, 4, "default:ice", false, 5)
+nssb_register_eggs ('scrausics', 'Scrausics', 18, 2, 4, "air", false, 5)
+nssb_register_eggs ('moonheron', 'Moonheron', 18, 2, 4, "air", true, 0)
+
+--Bosses of the eggs:
+nssb_register_eggs ('phoenix', 'Phoenix', 900, 10, 1, "air", false, 15)
+nssb_register_eggs ('tarantula', 'Tarantula', 900, 2, 1, "air", false, 5)
+nssb_register_eggs ('night_master', 'Night Master', 900, 10, 1, "air", true, 0)
+nssb_register_eggs ('ant_queen', 'Ant Queen', 900, 10, 1, "air", false, 5)
+nssb_register_eggs ('icelamander', 'Icelamander', 900, 10, 1, "air", false, 5)
 
 
 minetest.register_node("nssb:giant_sandworm_eggs", {
