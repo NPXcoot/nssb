@@ -405,7 +405,7 @@ nssb_register_buildings ('piccomoonheron', 8, "default:dirt_with_snow", 1, "defa
 nssb_register_buildings ('doppiopiccoghiaccio', 11, "default:dirt_with_snow", 1, "default:dirt",  1, "air", 3, "default:dirt_with_snow", 7, false, nil, true, false)
 nssb_register_buildings ('doppiopiccosabbia', 11, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 7, false, nil, false, false)
 nssb_register_buildings ('piccoscrausics', 8, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 3, false, nil, false, false)
-
+nssb_register_buildings ('fossasand', 1, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 16, false, nil, false, false)
 
 --Eggs
 
@@ -505,3 +505,27 @@ nssb_register_eggboss ('tarantula', 'Tarantula', 900, 2, 1, "air", 5)
 nssb_register_eggboss ('night_master', 'Night Master', 900, 10, 1, "air", 0)
 nssb_register_eggboss ('ant_queen', 'Ant Queen', 900, 10, 1, "air", 5)
 nssb_register_eggboss ('icelamander', 'Icelamander', 900, 10, 1, "air", 5)
+
+
+minetest.register_node("nssb:giant_sandworm_eggs", {
+		description = "Giant Sandworm Egg",
+		tiles = {"giant_sandworm_eggs.png"},
+		is_ground_content = false,
+		groups = {choppy=1},
+	})
+
+minetest.register_abm({
+	nodenames = {"nssb:giant_sandworm_eggs"},
+	neighbors = {"default:desert_stone"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node)
+		local pos1 = {x=pos.x, y=pos.y+1, z=pos.z}
+		local n = minetest.env:get_node(pos1).name
+		if n ~= "air" then
+			return
+		end
+		minetest.add_entity(pos1, "nssm:giant_sandworm")
+		minetest.remove_node(pos)
+end
+})
