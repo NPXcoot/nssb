@@ -1,8 +1,2 @@
-In development
-
-Testing1
-
-Testing2
-
 v1.0 - 22-03-16
 First stable release
