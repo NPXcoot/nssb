@@ -507,8 +507,6 @@ end
 
 --Morlavala nodes
 
---Stone, indistrucible stone, black fire, venoumous fog, dirt, poisoned water (glows emits particles), dark metal
---abm toglie le torce mette fiamme
 
 minetest.register_node("nssb:morentir", {
 	description = "Dark Stone",
@@ -561,7 +559,6 @@ minetest.register_node("nssb:morvilya", {
 	drowning = 1,
 	damage_per_second = 2,
 	post_effect_color = {a=800, r=1, g=1, b=1},
-	groups = {flammable = 2},
 })
 
 minetest.register_node("nssb:mornar", {
@@ -591,7 +588,7 @@ minetest.register_node("nssb:mornar", {
 			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
 		},
 	},
-	alpha = 600,
+	alpha = 800,
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -600,13 +597,153 @@ minetest.register_node("nssb:mornar", {
 	is_ground_content = false,
 	drop = "",
 	light_source = 10,
-	liquid_range= 0,
+	liquid_range= 8,
 	drowning = 1,
-	liquid_renewable = false,
+	liquid_renewable = true,
+	damage_per_second = 2,
 	liquidtype = "source",
-	liquid_alternative_flowing = "nssb:mornen",
+	liquid_alternative_flowing = "nssb:mornen_flowing",
 	liquid_alternative_source = "nssb:mornen",
 	liquid_viscosity = 6,
 	post_effect_color = {a=500, r=1, g=1, b=1},
-	groups = {water=3, liquid=3, puts_out_fire=1},
+	groups = {liquid=3, puts_out_fire=1},
+})
+
+minetest.register_node("nssb:mornen_flowing", {
+	description = "Flowing Dark Water",
+	inventory_image = minetest.inventorycube("mornen.png"),
+	drawtype = "flowingliquid",
+	tiles = {
+		{
+			name = "mornen_animated.png",
+			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
+		},},
+	paramtype = "light",
+	paramtype2 = "flowingliquid",
+	light_source = 10,
+	alpha = 800,
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	drowning = 1,
+	liquidtype = "flowing",
+	liquid_alternative_flowing = "nssb:mornen_flowing",
+	liquid_alternative_source = "nssb:mornen",
+	liquid_viscosity = 6,
+	liquid_renewable = true,
+	damage_per_second = 2,
+	post_effect_color = {a=500, r=1, g=1, b=1},
+	groups = {liquid=3, puts_out_fire=1, not_in_creative_inventory=1},
+})
+
+
+--abm
+
+minetest.register_abm({
+	nodenames = {"default:torch"},
+	neighbors = {"nssb:morentir","nssb:morkemen"},
+	interval = 1.0,
+	chance = 1,
+	action = function(pos, node)
+			minetest.set_node({x = pos.x, y = pos.y , z = pos.z}, {name = "nssb:mornar"})
+		end
+})
+
+minetest.register_abm({
+	nodenames = {"nssb:mornen"},
+	neighbors = {"air"},
+	interval = 1.0,
+	chance = 1,
+	action = 
+		function (pos, node)
+			minetest.add_particlespawner({
+				amount = 6,
+				time = 1,
+				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
+				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+				minvel = {x=0, y=0.1, z=0},
+				maxvel = {x=0, y=0.3, z=0},
+				minacc = {x=0,y=0,z=0},
+				maxacc = {x=0,y=0,z=0},
+				minexptime = 1,
+				maxexptime = 1,
+				minsize = 0.5,
+				maxsize = 0.7,
+				collisiondetection = false,
+				vertical = true,
+				texture = "morparticle.png",
+			})
+		end
+		
+})
+
+--nodes gen
+
+for i=1,8 do
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "nssb:indistructible_morentir",
+		wherein        = {"default:stone","air","default:stone_with_coal","default:stone_with_iron","default:stone_with_mese","default:stone_with_diamond","default:stone_with_gold","default:stone_with_copper"},
+		clust_scarcity = 1,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = -31000,
+		y_max          = -30997,
+	})
+end
+
+for i=1,8 do
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "nssb:indistructible_morentir",
+		wherein        = {"default:stone", "air","default:stone_with_coal","default:stone_with_iron","default:stone_with_mese","default:stone_with_diamond","default:stone_with_gold","default:stone_with_copper"},
+		clust_scarcity = 1,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = -30503,
+		y_max          = -30999,
+	})
+end
+
+local function replace(old, new)
+	for i=1,8 do
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = new,
+			wherein        = old,
+			clust_scarcity = 1,
+			clust_num_ores = 1,
+			clust_size     = 1,
+			y_min          = -30999,
+			y_max          = -30501,
+		})
+	end
+end
+
+replace("default:stone", "nssb:morentir")
+replace("default:stone_with_coal", "nssb:morelentir")
+replace("default:stone_with_iron", "nssb:morelentir")
+replace("default:stone_with_mese", "nssb:morentir")
+replace("default:stone_with_diamond", "nssb:morentir")
+replace("default:stone_with_gold", "nssb:morentir")
+replace("default:stone_with_copper", "nssb:morentir")
+replace("default:gravel", "nssb:morkemen")
+replace("default:dirt", "nssb:morkemen")
+replace("default:sand", "nssb:morkemen")
+replace("default:lava_source", "nssb:mornen")
+replace("default:lava_flowing", "nssb:mornen_flowing")
+replace("default:mese_block", "nssb:mornen")
+
+minetest.register_ore({
+   ore_type       = "blob",
+   ore            = "air",
+   wherein        = "nssb:morentir",
+   clust_scarcity = 6*6*6,
+   clust_num_ores = 200,
+   clust_size     = 10,
+	y_min         = -30999,
+	y_max         = -30501,
 })
