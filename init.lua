@@ -504,3 +504,109 @@ minetest.register_abm({
 		minetest.remove_node(pos)
 end
 })
+
+--Morlavala nodes
+
+--Stone, indistrucible stone, black fire, venoumous fog, dirt, poisoned water (glows emits particles), dark metal
+--abm toglie le torce mette fiamme
+
+minetest.register_node("nssb:morentir", {
+	description = "Dark Stone",
+	tiles = {"indistructible_morentir.png"},
+	is_ground_content = true,
+	groups = {cracky=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("nssb:indistructible_morentir", {
+	description = "Dark Indistrucltible Stone",
+	tiles = {"indistructible_morentir.png"},
+	is_ground_content = true,
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("nssb:morelentir", {
+	description = "Dark Starred Stone",
+	inventory_image = minetest.inventorycube("morelentir.png"),
+	light_source = 6,
+	tiles = {
+		{
+			name = "morelentir_animated.png",
+			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 6.0},
+		},},
+	is_ground_content = true,
+	groups = {cracky=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("nssb:morkemen", {
+	description = "Dark Dirt",
+	tiles = {"morkemen.png"},
+	is_ground_content = true,
+	groups = {crumbly=1},
+	sounds = default.node_sound_dirt_defaults(),
+})
+
+minetest.register_node("nssb:morvilya", {
+	description = "Dark Air",
+	drawtype = "airlike",
+	tiles = {"morvilya.png"},
+	paramtype = "light",
+	walkable = false,
+	sunlight_propagates = true,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	drop = "",
+	drowning = 1,
+	damage_per_second = 2,
+	post_effect_color = {a=800, r=1, g=1, b=1},
+	groups = {flammable = 2},
+})
+
+minetest.register_node("nssb:mornar", {
+	description = "Black Flame",
+	drawtype = "firelike",
+	tiles = {{
+		name = "mornar_animated.png",
+		animation = {type = "vertical_frames",
+			aspect_w = 16, aspect_h = 16, length = 1},
+	}},
+	inventory_image = "mornar.png",
+	light_source = 6,
+	groups = {igniter = 2, dig_immediate = 3},
+	drop = '',
+	walkable = false,
+	buildable_to = true,
+	damage_per_second = 5,
+	})
+	
+	minetest.register_node("nssb:mornen", {
+	description = "Black Water",
+	inventory_image = minetest.inventorycube("mornen.png"),
+	drawtype = "liquid",
+	tiles = {
+		{
+			name = "mornen_animated.png",
+			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
+		},
+	},
+	alpha = 600,
+	paramtype = "light",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	light_source = 10,
+	liquid_range= 0,
+	drowning = 1,
+	liquid_renewable = false,
+	liquidtype = "source",
+	liquid_alternative_flowing = "nssb:mornen",
+	liquid_alternative_source = "nssb:mornen",
+	liquid_viscosity = 6,
+	post_effect_color = {a=500, r=1, g=1, b=1},
+	groups = {water=3, liquid=3, puts_out_fire=1},
+})
