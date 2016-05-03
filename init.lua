@@ -173,6 +173,15 @@ minetest.register_node("nssb:web_cone_down", {
 	groups = {flammable=2, snappy=1, liquid=1},
 })
 
+minetest.register_craft({
+	output = 'nssb:marine_meselamp',
+	recipe = {
+		{'default:glass', 'bucket:bucket_water', 'default:glass'},
+		{'default:glass', 'default:mese_crystal', 'default:glass'},
+		{'default:glass', 'bucket:bucket_water', 'default:glass'},
+	}
+})
+
 minetest.register_node("nssb:web_cocoon", {
 	description = "Web Cocoon",
 	tiles = {"web_cocoon.png"},
@@ -577,7 +586,7 @@ minetest.register_node("nssb:mornar", {
 	buildable_to = true,
 	damage_per_second = 5,
 	})
-	
+
 	minetest.register_node("nssb:mornen", {
 	description = "Black Water",
 	inventory_image = minetest.inventorycube("mornen.png"),
@@ -657,7 +666,7 @@ minetest.register_abm({
 	neighbors = {"air"},
 	interval = 1.0,
 	chance = 1,
-	action = 
+	action =
 		function (pos, node)
 			minetest.add_particlespawner({
 				amount = 6,
@@ -677,7 +686,7 @@ minetest.register_abm({
 				texture = "morparticle.png",
 			})
 		end
-		
+
 })
 
 --nodes gen
