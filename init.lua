@@ -173,6 +173,15 @@ minetest.register_node("nssb:web_cone_down", {
 	groups = {flammable=2, snappy=1, liquid=1},
 })
 
+minetest.register_craft({
+	output = 'nssb:marine_meselamp',
+	recipe = {
+		{'default:glass', 'bucket:bucket_water', 'default:glass'},
+		{'default:glass', 'default:mese_crystal', 'default:glass'},
+		{'default:glass', 'bucket:bucket_water', 'default:glass'},
+	}
+})
+
 minetest.register_node("nssb:web_cocoon", {
 	description = "Web Cocoon",
 	tiles = {"web_cocoon.png"},
