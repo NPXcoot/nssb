@@ -1,4 +1,6 @@
 --Nssb
+local path = minetest.get_modpath("nssb")
+dofile(path.."/tunnels.lua")
 --Materials
 minetest.register_node("nssb:mossy_stone_brick", {
 	description = "Mossy Stone Brick",
@@ -416,6 +418,7 @@ nssb_register_buildings ('doppiopiccoghiaccio', 11, "default:dirt_with_snow", 1,
 nssb_register_buildings ('doppiopiccosabbia', 11, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 7, false, nil, false, false)
 nssb_register_buildings ('piccoscrausics', 8, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 3, false, nil, false, false)
 nssb_register_buildings ('fossasand', 1, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 16, false, nil, false, false)
+nssb_register_buildings ('portal', 6, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "default:tree", 4, false, nil, false, false)
 
 --Eggs
 
@@ -615,7 +618,7 @@ minetest.register_node("nssb:mornar", {
 	liquid_alternative_source = "nssb:mornen",
 	liquid_viscosity = 6,
 	post_effect_color = {a=500, r=1, g=1, b=1},
-	groups = {liquid=3, puts_out_fire=1},
+	groups = {liquid=3, water=1, puts_out_fire=1},
 })
 
 minetest.register_node("nssb:mornen_flowing", {
@@ -645,8 +648,39 @@ minetest.register_node("nssb:mornen_flowing", {
 	liquid_renewable = true,
 	damage_per_second = 2,
 	post_effect_color = {a=500, r=1, g=1, b=1},
-	groups = {liquid=3, puts_out_fire=1, not_in_creative_inventory=1},
+	groups = {liquid=3, puts_out_fire=1, water=1, not_in_creative_inventory=1},
 })
+
+	minetest.register_node("nssb:portal", {
+	description = "Morvala Portal",
+	inventory_image = minetest.inventorycube("mornen.png"),
+	drawtype = "liquid",
+	tiles = {
+		{
+			name = "mornen_animated.png",
+			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
+		},
+	},
+	alpha = 800,
+	paramtype = "light",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	light_source = 15,
+	liquid_range= 0,
+	drowning = 1,
+	liquid_renewable = false,
+	liquidtype = "source",
+	liquid_alternative_flowing = "nssb:portal",
+	liquid_alternative_source = "nssb:portal",
+	liquid_viscosity = 0,
+	post_effect_color = {a=10, r=1, g=1, b=1},
+	groups = {liquid=3, puts_out_fire=1},
+})
+
 
 
 --abm
@@ -689,6 +723,39 @@ minetest.register_abm({
 
 })
 
+minetest.register_abm({
+	nodenames = {"nssb:portal"},
+	neighbors = {"air"},
+	interval = 1.0,
+	chance = 1,
+	action =
+		function (pos, node)
+			minetest.add_particlespawner({
+				amount = 100,
+				time = 1,
+				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
+				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+				minvel = {x=0, y=0.1, z=0},
+				maxvel = {x=0, y=0.8, z=0},
+				minacc = {x=0,y=0,z=0},
+				maxacc = {x=0,y=0.4,z=0},
+				minexptime = 1,
+				maxexptime = 3,
+				minsize = 0.5,
+				maxsize = 1.4,
+				collisiondetection = false,
+				vertical = true,
+				texture = "morparticle.png",
+			})		
+--inserire funzione di teletrasporto che non sono in grado di fare
+		end
+})
+
+--destination of teleporting
+local function placeair (pos)
+	local posair ={ x=0,y=-30600,z=0}
+	minetest.place_schematic(posair, minetest.get_modpath("nssb").."/schems/air.mts")
+end
 --nodes gen
 
 for i=1,8 do
