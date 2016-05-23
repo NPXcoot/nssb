@@ -1,4 +1,10 @@
 --Nssb
+
+local path = minetest.get_modpath("nssb")
+--Mobs
+dofile(path.."/caverns.lua")
+
+
 --Materials
 minetest.register_node("nssb:mossy_stone_brick", {
 	description = "Mossy Stone Brick",
@@ -699,8 +705,8 @@ for i=1,8 do
 		clust_scarcity = 1,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min          = -31000,
-		y_max          = -30997,
+		y_min          = -30999,
+		y_max          = -30001,
 	})
 end
 
@@ -712,8 +718,8 @@ for i=1,8 do
 		clust_scarcity = 1,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min          = -30503,
-		y_max          = -30999,
+		y_min          = -30999,
+		y_max          = -30001,
 	})
 end
 
@@ -727,7 +733,7 @@ local function replace(old, new)
 			clust_num_ores = 1,
 			clust_size     = 1,
 			y_min          = -30999,
-			y_max          = -30501,
+			y_max          = -30001,
 		})
 	end
 end
@@ -754,5 +760,5 @@ minetest.register_ore({
    clust_num_ores = 200,
    clust_size     = 10,
 	y_min         = -30999,
-	y_max         = -30501,
+	y_max         = -30001,
 })
