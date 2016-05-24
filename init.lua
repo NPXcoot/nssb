@@ -488,12 +488,61 @@ nssb_register_eggs ('snow_biter', 'Snowbiter', 18, 2, 4, "default:ice", false, 5
 nssb_register_eggs ('scrausics', 'Scrausics', 18, 2, 4, "air", false, 5)
 nssb_register_eggs ('moonheron', 'Moonheron', 18, 2, 4, "air", true, 0)
 
+function nssb_register_eggboss (
+name, -- name of the mobs and the eggs
+descr, -- Description of the mob and eggs
+int, -- time interval between each birth
+wide, -- the radius in wich mobs are generated
+troppi, -- maximun number of mobs spawned
+neigh, -- block that need to be near for spawning the mobs
+night, --if only at night
+lumin) --luminosity parameter of the egg_block
+
+	minetest.register_node("nssb:".. name .."_eggboss", {
+		description = descr .." Eggs",
+		tiles = {name .."_eggs.png"},
+		light_source = lumin,
+		is_ground_content = false,
+		groups = {choppy=1},
+	})
+
+
+	minetest.register_abm({
+	nodenames = {"nssb:".. name .."_eggboss"},
+	neighbors = {neigh},
+	interval = int,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		local pos1 = {x=pos.x+math.random(-wide,wide), y=pos.y+0.5, z=pos.z+math.random(-wide,wide)}
+		local n = minetest.env:get_node(pos1).name
+		if n ~= "air" and n ~= "default:water_source" then
+			return
+		end
+		local count = 0
+
+		local objects = minetest.env:get_objects_inside_radius(pos, 12)
+		for _,obj in ipairs(objects) do
+			count = count +1
+			--minetest.chat_send_all("Count: "..count)
+		end
+
+		local t = minetest.get_timeofday()
+		--minetest.chat_send_all("Time of day: "..t)
+		if (t>=0.75 and t<=1) or (t>=0 and t<=0.25) or night==false then
+			if count < troppi then
+				minetest.add_entity(pos1, "nssm:" .. name)
+			end
+		end
+	end
+	})
+
+end
 --Bosses of the eggs:
-nssb_register_eggs ('phoenix', 'Phoenix', 900, 10, 1, "air", false, 15)
-nssb_register_eggs ('tarantula', 'Tarantula', 900, 2, 1, "air", false, 5)
-nssb_register_eggs ('night_master', 'Night Master', 900, 10, 1, "air", true, 0)
-nssb_register_eggs ('ant_queen', 'Ant Queen', 900, 10, 1, "air", false, 5)
-nssb_register_eggs ('icelamander', 'Icelamander', 900, 10, 1, "air", false, 5)
+nssb_register_eggboss ('phoenix', 'Phoenix', 900, 10, 1, "air", false, 15)
+nssb_register_eggboss ('tarantula', 'Tarantula', 900, 2, 1, "air", false, 5)
+nssb_register_eggboss ('night_master', 'Night Master', 900, 10, 1, "air", true, 0)
+nssb_register_eggboss ('ant_queen', 'Ant Queen', 900, 10, 1, "air", false, 5)
+nssb_register_eggboss ('icelamander', 'Icelamander', 900, 10, 1, "air", false, 5)
 
 
 minetest.register_node("nssb:giant_sandworm_eggs", {
@@ -602,7 +651,7 @@ minetest.register_node("nssb:mornar", {
 			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
 		},
 	},
-	alpha = 800,
+	alpha = 300,
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -635,7 +684,7 @@ minetest.register_node("nssb:mornen_flowing", {
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	light_source = 10,
-	alpha = 800,
+	alpha = 300,
 	walkable = false,
 	pointable = false,
 	diggable = false,
@@ -768,7 +817,7 @@ for i=1,8 do
 		clust_scarcity = 1,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min          = -30999,
+		y_min          = -30000,
 		y_max          = -30001,
 	})
 end
@@ -776,7 +825,7 @@ end
 for i=1,8 do
 	minetest.register_ore({
 		ore_type       = "scatter",
-		ore            = "nssb:indistructible_morentir",
+		ore            = "nssb:morentir",
 		wherein        = {"default:stone", "air","default:stone_with_coal","default:stone_with_iron","default:stone_with_mese","default:stone_with_diamond","default:stone_with_gold","default:stone_with_copper"},
 		clust_scarcity = 1,
 		clust_num_ores = 1,
