@@ -651,7 +651,7 @@ minetest.register_node("nssb:mornar", {
 			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
 		},
 	},
-	alpha = 300,
+	alpha = 650,
 	paramtype = "light",
 	walkable = false,
 	pointable = false,
@@ -676,15 +676,33 @@ minetest.register_node("nssb:mornen_flowing", {
 	description = "Flowing Dark Water",
 	inventory_image = minetest.inventorycube("mornen.png"),
 	drawtype = "flowingliquid",
-	tiles = {
+	tiles= {"mornen.png"},
+	special_tiles = {
 		{
 			name = "mornen_animated.png",
-			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
-		},},
+			backface_culling = false,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 3.3,
+			},
+		},
+		{
+			name = "mornen_animated.png",
+			backface_culling = true,
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 3.3,
+			},
+		},
+	},
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	light_source = 10,
-	alpha = 300,
+	alpha = 650,
 	walkable = false,
 	pointable = false,
 	diggable = false,
@@ -732,7 +750,25 @@ minetest.register_node("nssb:mornen_flowing", {
 	groups = {liquid=3, puts_out_fire=1},
 })
 
-
+minetest.register_node("nssb:morlote", {
+	description = "Morlote",
+	drawtype = "plantlike",
+	visual_scale = 1.0,
+	tiles = {"morlote.png"},
+	inventory_image = "morlote.png",
+	wield_image = "morlote.png",
+	paramtype = "light",
+	light_source= 10,
+	sunlight_propagates = true,
+	walkable = false,
+	buildable_to = false,
+	groups = {snappy = 3, flammable = 3, attached_node = 1},
+	sounds = default.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -5/16, 0.5},
+	},
+})
 
 --abm
 
@@ -747,7 +783,23 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
-	nodenames = {"nssb:mornen"},
+	nodenames = {"nssb:morentir"},
+	neighbors = {"air"},
+	interval = 20.0,
+	chance = 100,
+	action = function(pos, node)
+		local pos1 = {x=pos.x, y=pos.y+1, z=pos.z}
+		local n = minetest.env:get_node(pos1).name
+		if n == "air" then
+			return
+		minetest.set_node({x = pos.x, y = pos.y+1 , z = pos.z}, {name = "nssb:mornar"})
+		end
+	end
+})
+
+
+minetest.register_abm({
+	nodenames = {"nssb:mornen", "nssb:mornen_flowing"},
 	neighbors = {"air"},
 	interval = 1.0,
 	chance = 1,
@@ -755,7 +807,7 @@ minetest.register_abm({
 		function (pos, node)
 			minetest.add_particlespawner({
 				amount = 6,
-				time = 1,
+				time = 3,
 				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
 				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
 				minvel = {x=0, y=0.1, z=0},
@@ -763,7 +815,7 @@ minetest.register_abm({
 				minacc = {x=0,y=0,z=0},
 				maxacc = {x=0,y=0,z=0},
 				minexptime = 1,
-				maxexptime = 1,
+				maxexptime = 1.2,
 				minsize = 0.5,
 				maxsize = 0.7,
 				collisiondetection = false,
@@ -773,6 +825,7 @@ minetest.register_abm({
 		end
 
 })
+
 
 minetest.register_abm({
 	nodenames = {"nssb:portal"},
@@ -809,7 +862,7 @@ local function placeair (pos)
 end
 --nodes gen
 
-for i=1,8 do
+for i=1,9 do
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "nssb:indistructible_morentir",
@@ -822,21 +875,8 @@ for i=1,8 do
 	})
 end
 
-for i=1,8 do
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "nssb:morentir",
-		wherein        = {"default:stone", "air","default:stone_with_coal","default:stone_with_iron","default:stone_with_mese","default:stone_with_diamond","default:stone_with_gold","default:stone_with_copper"},
-		clust_scarcity = 1,
-		clust_num_ores = 1,
-		clust_size     = 1,
-		y_min          = -30999,
-		y_max          = -30001,
-	})
-end
-
 local function replace(old, new)
-	for i=1,8 do
+	for i=1,9 do
 		minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = new,
@@ -864,13 +904,46 @@ replace("default:lava_source", "nssb:mornen")
 replace("default:lava_flowing", "nssb:mornen_flowing")
 replace("default:mese_block", "nssb:mornen")
 
-minetest.register_ore({
+--[[minetest.register_ore({
    ore_type       = "blob",
    ore            = "air",
    wherein        = "nssb:morentir",
    clust_scarcity = 6*6*6,
    clust_num_ores = 200,
    clust_size     = 10,
+	y_min         = -30999,
+	y_max         = -30001,
+})
+
+minetest.register_ore({
+   ore_type       = "scatter",
+   ore            = "air",
+   wherein        = "nssb:morentir",
+   clust_scarcity = 3*3*3,
+   clust_num_ores = 200,
+   clust_size     = 10,
+	y_min         = -30999,
+	y_max         = -30001,
+})]]
+
+minetest.register_ore({
+   ore_type       = "blob",
+   ore            = "nssb:morvilya",
+   wherein        = "air",
+   clust_scarcity = 8*8*8,
+   clust_num_ores = 100,
+   clust_size     = 5,
+	y_min         = -30999,
+	y_max         = -30001,
+})
+
+minetest.register_ore({
+   ore_type       = "blob",
+   ore            = "nssb:mornar",
+   wherein        = "air",
+   clust_scarcity = 6*6*6,
+   clust_num_ores = 3,
+   clust_size     = 2,
 	y_min         = -30999,
 	y_max         = -30001,
 })
