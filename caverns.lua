@@ -2,7 +2,7 @@
 
 local YMIN = -31000 -- Cave realm limits
 local YMAX = -30000
-local TCAVE = 0.8 -- Cave threshold: 1 = small rare caves,
+local TCAVE = 0 -- Cave threshold: 1 = small rare caves,
 					-- 0.5 = 1/3rd ground volume, 0 = 1/2 ground volume.
 local BLEND = 64 -- Cave blend distance near YMIN, YMAX
 

@@ -904,17 +904,17 @@ replace("default:lava_source", "nssb:mornen")
 replace("default:lava_flowing", "nssb:mornen_flowing")
 replace("default:mese_block", "nssb:mornen")
 
---[[minetest.register_ore({
+minetest.register_ore({
    ore_type       = "blob",
    ore            = "air",
    wherein        = "nssb:morentir",
-   clust_scarcity = 6*6*6,
+   clust_scarcity = 8*8*8,
    clust_num_ores = 200,
-   clust_size     = 10,
+   clust_size     = 7,
 	y_min         = -30999,
 	y_max         = -30001,
 })
-
+--[[
 minetest.register_ore({
    ore_type       = "scatter",
    ore            = "air",
