@@ -2,7 +2,7 @@
 
 local path = minetest.get_modpath("nssb")
 --dofile(path.."/tunnels.lua")
-dofile(path.."/caverns.lua")
+--dofile(path.."/caverns.lua")
 --Materials
 minetest.register_node("nssb:mossy_stone_brick", {
 	description = "Mossy Stone Brick",
@@ -573,7 +573,7 @@ end
 
 minetest.register_node("nssb:morentir", {
 	description = "Dark Stone",
-	tiles = {"indistructible_morentir.png"},
+	tiles = {"morentir.png"},
 	is_ground_content = true,
 	groups = {cracky=1},
 	sounds = default.node_sound_stone_defaults(),
@@ -581,7 +581,7 @@ minetest.register_node("nssb:morentir", {
 
 minetest.register_node("nssb:indistructible_morentir", {
 	description = "Dark Indistrucltible Stone",
-	tiles = {"indistructible_morentir.png"},
+	tiles = {"morentir.png"},
 	is_ground_content = true,
 	sounds = default.node_sound_stone_defaults(),
 })
@@ -660,7 +660,7 @@ minetest.register_node("nssb:mornar", {
 	is_ground_content = false,
 	drop = "",
 	light_source = 10,
-	liquid_range= 8,
+	liquid_range= 4,
 	drowning = 1,
 	liquid_renewable = true,
 	damage_per_second = 2,
@@ -770,6 +770,28 @@ minetest.register_node("nssb:morlote", {
 	},
 })
 
+minetest.register_node("nssb:moranga", {
+	description = "Moranga Ore",
+	tiles = {"morentir.png^moranga.png"},
+	groups = {cracky = 1},
+	drop = 'nssb:moranga_ingot',
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("nssb:life_energy_ore", {
+	description = "Life Energy Ore",
+	tiles = {"morentir.png^life_energy_ore.png"},
+	groups = {cracky = 1},
+	light_source = 3,
+	drop = 'nssm:energy_globe',
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_craftitem("nssb:moranga_ingot", {
+	description = "Moranga Ingot",
+	image = "moranga_ingot.png",
+})
+
 --abm
 
 minetest.register_abm({
@@ -781,7 +803,7 @@ minetest.register_abm({
 			minetest.set_node({x = pos.x, y = pos.y , z = pos.z}, {name = "nssb:mornar"})
 		end
 })
-
+--[[
 minetest.register_abm({
 	nodenames = {"nssb:morentir"},
 	neighbors = {"air"},
@@ -796,17 +818,17 @@ minetest.register_abm({
 		end
 	end
 })
-
+]]
 
 minetest.register_abm({
 	nodenames = {"nssb:mornen", "nssb:mornen_flowing"},
 	neighbors = {"air"},
 	interval = 1.0,
-	chance = 1,
+	chance = 3,
 	action =
 		function (pos, node)
 			minetest.add_particlespawner({
-				amount = 6,
+				amount = 3,
 				time = 3,
 				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
 				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
@@ -862,19 +884,8 @@ local function placeair (pos)
 end
 --nodes gen
 
-for i=1,9 do
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "nssb:indistructible_morentir",
-		wherein        = {"default:stone","air","default:stone_with_coal","default:stone_with_iron","default:stone_with_mese","default:stone_with_diamond","default:stone_with_gold","default:stone_with_copper"},
-		clust_scarcity = 1,
-		clust_num_ores = 1,
-		clust_size     = 1,
-		y_min          = -30000,
-		y_max          = -30001,
-	})
-end
 
+--[[
 local function replace(old, new)
 	for i=1,9 do
 		minetest.register_ore({
@@ -884,8 +895,8 @@ local function replace(old, new)
 			clust_scarcity = 1,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -30999,
-			y_max          = -30001,
+			y_min          = -197,
+			y_max          = -34,
 		})
 	end
 end
@@ -914,7 +925,7 @@ minetest.register_ore({
 	y_min         = -30999,
 	y_max         = -30001,
 })
---[[
+
 minetest.register_ore({
    ore_type       = "scatter",
    ore            = "air",
@@ -924,7 +935,7 @@ minetest.register_ore({
    clust_size     = 10,
 	y_min         = -30999,
 	y_max         = -30001,
-})]]
+})
 
 minetest.register_ore({
    ore_type       = "blob",
@@ -946,4 +957,307 @@ minetest.register_ore({
    clust_size     = 2,
 	y_min         = -30999,
 	y_max         = -30001,
-})
+})]]
+--cose da fare: rimuovere i dungeons, smussare il soffitto e abbassarlo ancora, togliere le colonne d'acqua, sandstone
+--This dimension is "divided" in in 7 layer.
+--1° layer from 30000 to 30007 is indistructible, made of indistructible morentir
+
+for i=1,9 do
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "nssb:indistructible_morentir",
+		wherein        = {"default:water_source","default:water_flowing","default:gravel", "default:dirt", "default:sand", "default:lava_source", "default:lava_flowing", "default:mese_block", "default:stone","air","default:stone_with_coal","default:stone_with_iron","default:stone_with_mese","default:stone_with_diamond","default:stone_with_gold","default:stone_with_copper"},
+		clust_scarcity = 1,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = -37,
+		y_max          = -30,
+	})
+end
+
+--2° layer from 30008 to 30028, is "stalagmitic", have bats and morelentir
+
+local function replace(old, new)
+	for i=1,9 do
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = new,
+			wherein        = old,
+			clust_scarcity = 1,
+			clust_num_ores = 1,
+			clust_size     = 1,
+			y_min          = -58,
+			y_max          = -38,
+		})
+	end
+end
+
+replace("default:stone", "nssb:morentir")
+replace("default:stone_with_coal", "nssb:morelentir")
+replace("default:stone_with_iron", "nssb:morelentir")
+replace("default:stone_with_mese", "nssb:morelentir")
+replace("default:stone_with_diamond", "nssb:morelentir")
+replace("default:stone_with_gold", "nssb:morelentir")
+replace("default:stone_with_copper", "nssb:morelentir")
+replace("default:gravel", "nssb:morelentir")
+replace("default:dirt", "nssb:morelentir")
+replace("default:sand", "nssb:morelentir")
+replace("default:water_source", "nssb:morelentir")
+replace("default:water_flowing", "nssb:morelentir")
+replace("default:lava_source", "nssb:morelentir")
+replace("default:lava_flowing", "nssb:morelentir")
+replace("default:mese_block", "nssb:morelentir")
+
+minetest.register_ore({
+		ore_type        = "blob",
+		ore             = "air",
+		wherein         = "nssb:morentir",
+		clust_scarcity  = 2 * 2 * 2,
+		clust_size      = 8,
+		y_min           = -58,
+		y_max           = -38,
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.5,
+			scale = 0.2,
+			spread = {x = 5, y = 5, z = 5},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+
+--3° layer from 30029 to 30077 is made by air
+
+for i=1,12 do
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = "air",
+			wherein        = {"default:water_source","default:water_flowing","default:gravel", "default:dirt", "default:sand", "default:lava_source", "default:lava_flowing", "default:mese_block", "default:stone","air","default:stone_with_coal","default:stone_with_iron","default:stone_with_mese","default:stone_with_diamond","default:stone_with_gold","default:stone_with_copper"},
+			clust_scarcity = 1,
+			clust_num_ores = 1,
+			clust_size     = 1,
+			y_min          = -93,
+			y_max          = -59,
+		})
+	end
+
+minetest.register_ore({
+		ore_type        = "blob",
+		ore             = "nssb:morentir",
+		wherein         = "air",
+		clust_scarcity  = 13 * 13 * 13,
+		clust_size      = 6,
+		y_min           = -95,
+		y_max           = -89,
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.5,
+			scale = 0.2,
+			spread = {x = 5, y = 5, z = 5},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+	
+minetest.register_ore({
+		ore_type        = "blob",
+		ore             = "nssb:morentir",
+		wherein         = "air",
+		clust_scarcity  = 11 * 11 * 11,
+		clust_size      = 5,
+		y_min           = -95,
+		y_max           = -90,
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.5,
+			scale = 0.2,
+			spread = {x = 5, y = 5, z = 5},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+	
+minetest.register_ore({
+		ore_type        = "blob",
+		ore             = "nssb:morentir",
+		wherein         = "air",
+		clust_scarcity  = 10 * 10 * 10,
+		clust_size      = 4,
+		y_min           = -95,
+		y_max           = -91,
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.5,
+			scale = 0.2,
+			spread = {x = 5, y = 5, z = 5},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+	
+minetest.register_ore({
+		ore_type        = "blob",
+		ore             = "nssb:morentir",
+		wherein         = "air",
+		clust_scarcity  = 10 * 10 * 10,
+		clust_size      = 10,
+		y_min           = -95,
+		y_max           = -89,
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.9,
+			scale = 0.9,
+			spread = {x = 1, y = 10, z = 1},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+	
+--4°layer from  30078 to 30091 is a plain with mobs, fire, water...
+
+local function replace(old, new)
+	for i=1,9 do
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = new,
+			wherein        = old,
+			clust_scarcity = 1,
+			clust_num_ores = 1,
+			clust_size     = 1,
+			y_min          = -107,
+			y_max          = -94,
+		})
+	end
+end
+
+replace("default:stone", "nssb:morentir")
+replace("default:stone_with_coal", "nssb:mornen")
+replace("default:stone_with_iron", "air")
+replace("default:stone_with_mese", "air")
+replace("default:stone_with_diamond", "air")
+replace("default:stone_with_gold", "air")
+replace("default:stone_with_copper", "air")
+replace("default:gravel", "nssb:morkemen")
+replace("default:dirt", "nssb:morkemen")
+replace("default:sand", "nssb:morkemen")
+replace("default:lava_source", "nssb:mornen")
+replace("default:lava_flowing", "nssb:mornen_flowing")
+replace("default:water_source", "nssb:mornen")
+replace("default:water_flowing", "nssb:mornen_flowing")
+replace("default:mese_block", "nssb:life_energy_ore")
+
+--[[minetest.register_ore({
+		ore_type        = "blob",
+		ore             = "air",
+		wherein         = "nssb:morentir",
+		clust_scarcity  = 5 * 5 * 5,
+		clust_size      = 3,
+		y_min           = -107,
+		y_max           = -94,
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.5,
+			scale = 0.2,
+			spread = {x = 5, y = 5, z = 5},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+	
+minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = "air",
+			wherein        = {"nssb:morentir"},
+			clust_scarcity = 9,
+			clust_num_ores = 4,
+			clust_size     = 2,
+			y_min          = -97,
+			y_max          = -94,
+		})]]
+
+--5° layer from 30092 to 30140 is underground with caves
+
+local function replace(old, new)
+	for i=1,9 do
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = new,
+			wherein        = old,
+			clust_scarcity = 1,
+			clust_num_ores = 1,
+			clust_size     = 1,
+			y_min          = -156,
+			y_max          = -108,
+		})
+	end
+end
+
+replace("default:stone", "nssb:morentir")
+replace("default:stone_with_coal", "nssb:life_energy_ore")
+replace("default:stone_with_iron", "nssb:morentir")
+replace("default:stone_with_mese", "nssb:morentir")
+replace("default:stone_with_diamond", "nssb:life_energy_ore")
+replace("default:stone_with_gold", "nssb:life_energy_ore")
+replace("default:stone_with_copper", "nssb:morentir")
+replace("default:gravel", "nssb:morkemen")
+replace("default:dirt", "nssb:morkemen")
+replace("default:sand", "nssb:morkemen")
+replace("default:lava_source", "nssb:morentir")
+replace("default:lava_flowing", "nssb:morentir")
+replace("default:water_source", "nssb:mornen")
+replace("default:water_flowing", "nssb:mornen_flowing")
+replace("default:mese_block", "nssb:life_energy_ore")
+
+--6° layer from 30141 to 30189 is underground with other caves anc the special metal
+
+local function replace(old, new)
+	for i=1,9 do
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = new,
+			wherein        = old,
+			clust_scarcity = 1,
+			clust_num_ores = 1,
+			clust_size     = 1,
+			y_min          = -205,
+			y_max          = -157,
+		})
+	end
+end
+
+replace("default:stone", "nssb:morentir")
+replace("default:stone_with_coal", "nssb:life_energy_ore")
+replace("default:stone_with_iron", "nssb:moranga")
+replace("default:stone_with_mese", "nssb:moranga")
+replace("default:stone_with_diamond", "nssb:life_energy_ore")
+replace("default:stone_with_gold", "nssb:life_energy_ore")
+replace("default:stone_with_copper", "nssb:moranga")
+replace("default:gravel", "nssb:morkemen")
+replace("default:dirt", "nssb:morkemen")
+replace("default:sand", "nssb:morkemen")
+replace("default:lava_source", "nssb:morentir")
+replace("default:lava_flowing", "nssb:morentir")
+replace("default:water_source", "nssb:mornen")
+replace("default:water_flowing", "nssb:mornen_flowing")
+replace("default:mese_block", "nssb:life_energy_ore")
+
+--7° layer from 30190 to 30197 is indistructible
+
+for i=1,9 do
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "nssb:indistructible_morentir",
+		wherein        = {"default:water_source","default:water_flowing","default:gravel", "default:dirt", "default:sand", "default:lava_source", "default:lava_flowing", "default:mese_block", "default:stone","air","default:stone_with_coal","default:stone_with_iron","default:stone_with_mese","default:stone_with_diamond","default:stone_with_gold","default:stone_with_copper"},
+		clust_scarcity = 1,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = -213,
+		y_max          = -206,
+	})
+end
