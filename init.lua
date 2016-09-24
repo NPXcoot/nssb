@@ -636,7 +636,7 @@ minetest.register_node("nssb:mornar", {
 	light_source = 12,
 	groups = {igniter = 2},
 	drop = '',
-	walkable = false,
+	walkable = true,
 	buildable_to = false,
 	damage_per_second = 4,
 	})
@@ -768,6 +768,23 @@ minetest.register_node("nssb:morlote", {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, -5/16, 0.5},
 	},
+})
+
+minetest.register_abm({
+	nodenames = {"nssm:morlote"},
+	neighbors = {"air"},
+	interval = 1,
+	chance = 1,
+	action = 
+	function(pos, node)
+		local pos1 = {x=pos.x, y=pos.y+1, z=pos.z}
+		local n = minetest.env:get_node(pos1).name
+		if n ~= "air" then
+			return
+		end
+		minetest.add_entity(pos1, "nssm:morgre")
+		minetest.remove_node(pos)
+	end
 })
 
 minetest.register_node("nssb:moranga", {
@@ -1160,7 +1177,7 @@ minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "nssm:morwa_statue",
 			wherein        = "air",
-			clust_scarcity = 10*10*10,
+			clust_scarcity = 13*13*13,
 			clust_num_ores = 1,
 			clust_size     = 1,
 			y_min          = -94,
