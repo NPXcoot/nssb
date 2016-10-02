@@ -158,7 +158,7 @@ minetest.register_abm({
 	neighbors = {"air"},
 	interval = 30,
 	chance = 40,
-	action = 
+	action =
 	function(pos, node)
 		local pos1 = {x=pos.x, y=pos.y+1, z=pos.z}
 		local n = minetest.env:get_node(pos1).name
@@ -175,7 +175,7 @@ minetest.register_abm({
 	neighbors = {"nssb:fall_morentir"},
 	interval = 10,
 	chance = 3,
-	action = 
+	action =
 	function(pos, node)
 		nodeupdate(pos)
 	end
@@ -186,7 +186,7 @@ minetest.register_abm({
 	neighbors = {"nssb:morentir"},
 	interval = 1,
 	chance = 3,
-	action = 
+	action =
 	function(self, pos, node)
         explosion(pos, 3, 1)
 	end
@@ -246,19 +246,97 @@ minetest.register_abm({
 				vertical = true,
 				texture = "morparticle.png",
 			})
---inserire funzione di teletrasporto che non sono in grado di fare
+			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+				if obj:is_player() then
+					local pos1 = {x=pos.x,y=-30093,z=pos.z}
+					local pos2 = {x=pos.x,y=-30092,z=pos.z}
+					local name = minetest.env:get_node(pos1).name
+					local name2
+					if name == "ignore" then
+						minetest.get_voxel_manip():read_from_map(pos1, pos1)
+						if not minetest.get_node_or_nil(pos1) then
+							minetest.emerge_area(vector.subtract(pos1, 80), vector.add(pos1, 80))
+							minetest.forceload_block(pos1)
+						end
+
+						--minetest.get_voxel_manip():read_from_map(pos1, pos1)
+						--minetest.chat_send_all("Dentro")
+						--minetest.get_voxel_manip():read_from_map(pos2, pos2)
+						name = minetest.get_node(pos1).name
+						name2 = minetest.get_node(pos2).name
+						--[[
+						if name == "ignore" then
+							minetest.emerge_area(vector.subtract(pos1, 80), vector.add(pos1, 80))
+							minetest.get_voxel_manip():read_from_map(pos1, pos1)
+							minetest.get_voxel_manip():read_from_map(pos2, pos2)
+							name = minetest.get_node(pos1).name
+							name2 = minetest.get_node(pos2).name
+						end]]
+					end
+					if (name=="air") and (name2=="air") then
+						obj:setpos(pos1)
+					else
+						minetest.chat_send_all("Name: "..name.." Name2: "..name2)
+					end
+				end
+			end
 		end
 })
 
---destination of teleporting
-local function placeair (pos)
-	local posair ={ x=0,y=-30600,z=0}
-	minetest.place_schematic(posair, minetest.get_modpath("nssb").."/schems/air.mts")
-end
+minetest.register_abm({
+	nodenames = {"nssb:portalhome"},
+	neighbors = {"air"},
+	interval = 1.0,
+	chance = 1,
+	action =
+		function (pos, node)
+			minetest.add_particlespawner({
+				amount = 100,
+				time = 1,
+				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
+				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+				minvel = {x=0, y=0.1, z=0},
+				maxvel = {x=0, y=0.8, z=0},
+				minacc = {x=0,y=0,z=0},
+				maxacc = {x=0,y=0.4,z=0},
+				minexptime = 1,
+				maxexptime = 3,
+				minsize = 0.5,
+				maxsize = 1.4,
+				collisiondetection = false,
+				vertical = true,
+				texture = "morparticle.png",
+			})
+			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+				if obj:is_player() then
+					local pos1
+					local pos2
+					local name2
+					for i=0,140 do
+						pos1 = {x = pos.x, y = i, z = pos.z}
+						pos2 = {x = pos.x, y = i+1, z = pos.z}
+						local name = minetest.env:get_node(pos1).name
+						if name == "ignore" then
+							minetest.get_voxel_manip():read_from_map(pos1, pos1)
+							minetest.get_voxel_manip():read_from_map(pos2, pos2)
+							name = minetest.get_node(pos1).name
+							name2 = minetest.get_node(pos2).name
+						end
+						--minetest.chat_send_all("Name: "..name)
+						if (name == "air") and (name2 == "air") then
+							obj:setpos(pos1)
+							return
+						end
+					end
+				end
+			end
+		end
+})
+
 --nodes gen
 
 --This dimension is "divided" in in 7 layer.
---1° layer from 30000 to 30007 is indistructible, made of indistructible morentir
+--1st layer from 30000 to 30007 is indistructible, made of indistructible morentir
 
 
 
@@ -270,12 +348,12 @@ for i=1,9 do
 		clust_scarcity = 1,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min          = -44,
-		y_max          = -37,
+		y_min          = -30044,
+		y_max          = -30037,
 	})
 end
 
---2° layer from 30008 to 30028, is "stalagmitic", have bats and morelentir
+--2ï¿½ layer from 30008 to 30028, is "stalagmitic", have bats and morelentir
 
 local function replace(old, new)
 	for i=1,9 do
@@ -286,8 +364,8 @@ local function replace(old, new)
 			clust_scarcity = 1,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -65,
-			y_max          = -45,
+			y_min          = -30065,
+			y_max          = -30045,
 		})
 	end
 end
@@ -315,8 +393,8 @@ minetest.register_ore({
 		wherein         = "nssb:morentir",
 		clust_scarcity  = 15 * 15 * 15,
 		clust_size      = 6,
-		y_min           = -65,
-		y_max           = -45,
+		y_min           = -30065,
+		y_max           = -30045,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -327,7 +405,7 @@ minetest.register_ore({
 			persist = 0.0
 		},
 	})
-for i=1,3 do	
+for i=1,3 do
 minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "air",
@@ -335,13 +413,13 @@ minetest.register_ore({
 			clust_scarcity = 1,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -66,
-			y_max          = -58,
-		})	
+			y_min          = -30066,
+			y_max          = -30058,
+		})
 end
 
-	
---3° layer from 30029 to 30077 is made by air
+
+--3ï¿½ layer from 30029 to 30077 is made by air
 
 for i=1,16 do
 		minetest.register_ore({
@@ -351,8 +429,8 @@ for i=1,16 do
 			clust_scarcity = 1,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -93,
-			y_max          = -66,
+			y_min          = -30093,
+			y_max          = -30066,
 		})
 	end
 
@@ -362,8 +440,8 @@ minetest.register_ore({
 		wherein         = "air",
 		clust_scarcity  = 10 * 10 * 10,
 		clust_size      = 3,
-		y_min           = -68,
-		y_max           = -65,
+		y_min           = -30068,
+		y_max           = -30065,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -374,15 +452,15 @@ minetest.register_ore({
 			persist = 0.0
 		},
 	})
-	
+
 minetest.register_ore({
 		ore_type        = "blob",
-		ore             = "nssb:morelentir",
+		ore             = "nssb:fall_morentir", --morelentir
 		wherein         = "air",
 		clust_scarcity  = 16 * 16 * 16,
 		clust_size      = 6,
-		y_min           = -71,
-		y_max           = -65,
+		y_min           = -30071,
+		y_max           = -30065,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -393,15 +471,15 @@ minetest.register_ore({
 			persist = 0.0
 		},
 	})
-	
+
 minetest.register_ore({
 		ore_type        = "blob",
 		ore             = "nssb:morvilya",
 		wherein         = "nssb:morentir",
 		clust_scarcity  = 15 * 15 * 15,
 		clust_size      = 6,
-		y_min           = -92,
-		y_max           = -66,
+		y_min           = -30092,
+		y_max           = -30066,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -411,7 +489,7 @@ minetest.register_ore({
 			octaves = 1,
 			persist = 0.0
 		},
-	})	
+	})
 
 minetest.register_ore({
 		ore_type        = "blob",
@@ -419,8 +497,8 @@ minetest.register_ore({
 		wherein         = "air",
 		clust_scarcity  = 13 * 13 * 13,
 		clust_size      = 6,
-		y_min           = -95,
-		y_max           = -89,
+		y_min           = -30095,
+		y_max           = -30089,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -431,15 +509,15 @@ minetest.register_ore({
 			persist = 0.0
 		},
 	})
-	
+
 minetest.register_ore({
 		ore_type        = "blob",
 		ore             = "nssb:morentir",
 		wherein         = "air",
 		clust_scarcity  = 11 * 11 * 11,
 		clust_size      = 5,
-		y_min           = -95,
-		y_max           = -90,
+		y_min           = -30095,
+		y_max           = -30090,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -450,15 +528,15 @@ minetest.register_ore({
 			persist = 0.0
 		},
 	})
-	
+
 minetest.register_ore({
 		ore_type        = "blob",
 		ore             = "nssb:morentir",
 		wherein         = "air",
 		clust_scarcity  = 10 * 10 * 10,
 		clust_size      = 4,
-		y_min           = -95,
-		y_max           = -91,
+		y_min           = -30095,
+		y_max           = -30091,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -469,15 +547,15 @@ minetest.register_ore({
 			persist = 0.0
 		},
 	})
-	
+
 minetest.register_ore({
 		ore_type        = "blob",
 		ore             = "nssb:morentir",
 		wherein         = "air",
 		clust_scarcity  = 10 * 10 * 10,
 		clust_size      = 10,
-		y_min           = -95,
-		y_max           = -89,
+		y_min           = -30095,
+		y_max           = -30089,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 1,
@@ -488,8 +566,8 @@ minetest.register_ore({
 			persist = 0.0
 		},
 	})
-	
---4°layer from  30078 to 30091 is a plain with mobs, fire, water...
+
+--4ï¿½layer from  30078 to 30091 is a plain with mobs, fire, water...
 
 local function replace(old, new)
 	for i=1,9 do
@@ -500,8 +578,8 @@ local function replace(old, new)
 			clust_scarcity = 1,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -107,
-			y_max          = -94,
+			y_min          = -30107,
+			y_max          = -30094,
 		})
 	end
 end
@@ -530,10 +608,10 @@ minetest.register_ore({
 			clust_scarcity = 6*6*6,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -94,
-			y_max          = -93,
+			y_min          = -30094,
+			y_max          = -30093,
 		})
-		
+
 minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "nssb:mornar",
@@ -541,10 +619,10 @@ minetest.register_ore({
 			clust_scarcity = 4*4*4,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -94,
-			y_max          = -93,
+			y_min          = -30094,
+			y_max          = -30093,
 		})
-		
+
 minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "nssm:morwa_statue",
@@ -552,11 +630,11 @@ minetest.register_ore({
 			clust_scarcity = 20*20*20,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -94,
-			y_max          = -93,
+			y_min          = -30094,
+			y_max          = -30093,
 		})
 
---5° layer from 30092 to 30140 is underground with caves
+--5ï¿½ layer from 30092 to 30140 is underground with caves
 
 local function replace(old, new)
 	for i=1,9 do
@@ -567,8 +645,8 @@ local function replace(old, new)
 			clust_scarcity = 1,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -156,
-			y_max          = -108,
+			y_min          = -30156,
+			y_max          = -30108,
 		})
 	end
 end
@@ -590,7 +668,7 @@ replace("default:water_flowing", "nssb:mornen_flowing")
 replace("default:mese_block", "nssb:life_energy_ore")
 replace({"nssb:ant_dirt","default:stone","default:cobble","default:stonebrick","default:mossycobble","default:desert_stone","default:desert_cobble","default:desert_stonebrick","default:sandstone","default:sandstonebrick"}, "nssb:morkemen")
 
---6° layer from 30141 to 30189 is underground with other caves and the special metal
+--6ï¿½ layer from 30141 to 30189 is underground with other caves and the special metal
 
 local function replace(old, new)
 	for i=1,9 do
@@ -601,8 +679,8 @@ local function replace(old, new)
 			clust_scarcity = 1,
 			clust_num_ores = 1,
 			clust_size     = 1,
-			y_min          = -205,
-			y_max          = -157,
+			y_min          = -30205,
+			y_max          = -30157,
 		})
 	end
 end
@@ -625,7 +703,7 @@ replace("default:mese_block", "nssb:life_energy_ore")
 replace({"nssb:ant_dirt","default:stone","default:cobble","default:stonebrick","default:mossycobble","default:desert_stone","default:desert_cobble","default:desert_stonebrick","default:sandstone","default:sandstonebrick"}, "nssb:morkemen")
 
 
---7° layer from 30190 to 30197 is indistructible
+--7ï¿½ layer from 30190 to 30197 is indistructible
 
 for i=1,9 do
 	minetest.register_ore({
@@ -635,7 +713,7 @@ for i=1,9 do
 		clust_scarcity = 1,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min          = -213,
-		y_max          = -206,
+		y_min          = -30213,
+		y_max          = -30206,
 	})
 end

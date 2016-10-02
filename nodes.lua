@@ -590,8 +590,8 @@ minetest.register_node("nssb:mornen_flowing", {
 	groups = {liquid=3, puts_out_fire=1, water=1, not_in_creative_inventory=1},
 })
 
-	minetest.register_node("nssb:portal", {
-	description = "Morvala Portal",
+minetest.register_node("nssb:portal", {
+	description = "Morlendor Portal",
 	inventory_image = minetest.inventorycube("mornen.png"),
 	drawtype = "liquid",
 	tiles = {
@@ -615,6 +615,36 @@ minetest.register_node("nssb:mornen_flowing", {
 	liquidtype = "source",
 	liquid_alternative_flowing = "nssb:portal",
 	liquid_alternative_source = "nssb:portal",
+	liquid_viscosity = 0,
+	post_effect_color = {a=10, r=1, g=1, b=1},
+	groups = {liquid=3, puts_out_fire=1},
+})
+
+minetest.register_node("nssb:portalhome", {
+	description = "Home Portal",
+	inventory_image = minetest.inventorycube("mornen.png"),
+	drawtype = "liquid",
+	tiles = {
+		{
+			name = "mornen_animated.png",
+			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
+		},
+	},
+	alpha = 800,
+	paramtype = "light",
+	walkable = false,
+	pointable = false,
+	diggable = false,
+	buildable_to = true,
+	is_ground_content = false,
+	drop = "",
+	light_source = 15,
+	liquid_range= 0,
+	drowning = 1,
+	liquid_renewable = false,
+	liquidtype = "source",
+	liquid_alternative_flowing = "nssb:portalhome",
+	liquid_alternative_source = "nssb:portalhome",
 	liquid_viscosity = 0,
 	post_effect_color = {a=10, r=1, g=1, b=1},
 	groups = {liquid=3, puts_out_fire=1},
