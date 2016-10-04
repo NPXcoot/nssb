@@ -230,7 +230,7 @@ minetest.register_abm({
 	action =
 		function (pos, node)
 			minetest.add_particlespawner({
-				amount = 100,
+				amount = 15,
 				time = 1,
 				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
 				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
@@ -291,7 +291,7 @@ minetest.register_abm({
 	action =
 		function (pos, node)
 			minetest.add_particlespawner({
-				amount = 100,
+				amount = 15,
 				time = 1,
 				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
 				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
