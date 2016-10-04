@@ -305,7 +305,7 @@ minetest.register_abm({
 				maxsize = 1.4,
 				collisiondetection = false,
 				vertical = true,
-				texture = "morparticle.png",
+				texture = "earth_particle.png",
 			})
 			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 				if obj:is_player() then

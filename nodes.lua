@@ -57,6 +57,16 @@ minetest.register_node("nssb:marine_meselamp", {
 	sounds = default.node_sound_glass_defaults(),
 })
 
+minetest.register_node("nssb:morlamp", {
+	description = "Morlamp",
+	tiles = {"morlamp.png"},
+	is_ground_content = false,
+	groups = {cracky=3},
+	drop = "",
+	light_source = 15,
+	sounds = default.node_sound_glass_defaults(),
+})
+
 minetest.register_node("nssb:mantis_clay", {
 	description = "Mantis Clay",
 	tiles = {"mantis_clay.png"},
@@ -622,11 +632,11 @@ minetest.register_node("nssb:portal", {
 
 minetest.register_node("nssb:portalhome", {
 	description = "Home Portal",
-	inventory_image = minetest.inventorycube("mornen.png"),
+	inventory_image = minetest.inventorycube("portalhome.png"),
 	drawtype = "liquid",
 	tiles = {
 		{
-			name = "mornen_animated.png",
+			name = "portalhome_animated.png",
 			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 2.0},
 		},
 	},
@@ -682,7 +692,7 @@ minetest.register_node("nssb:life_energy_ore", {
 	description = "Life Energy Ore",
 	tiles = {"morentir.png^life_energy_ore.png"},
 	groups = {cracky = 1},
-	light_source = 3,
+	light_source = 4,
 	drop = 'nssm:energy_globe',
 	sounds = default.node_sound_stone_defaults(),
 })
@@ -702,4 +712,11 @@ minetest.register_craft({
 minetest.register_craftitem("nssb:moranga_ingot", {
 	description = "Moranga Ingot",
 	image = "moranga_ingot.png",
+})
+
+
+minetest.register_node("nssb:morvalar_egg", {
+	description = "Morvalar Egg",
+	tiles = {"morvalar_egg.png"},
+	light_source = 13,
 })
