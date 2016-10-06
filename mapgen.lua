@@ -176,7 +176,7 @@ minetest.register_abm({
 		minetest.remove_node(pos)
 	end
 })
---[[ danno degli errori strani
+-- danno degli errori strani
 minetest.register_abm({
 	nodenames = {"nssb:fall_morentir"},
 	neighbors = {"nssb:fall_morentir"},
@@ -188,17 +188,19 @@ minetest.register_abm({
 	end
 })
 
+
 minetest.register_abm({
 	nodenames = {"nssb:boum_morentir"},
 	neighbors = {"nssb:morentir"},
 	interval = 1,
 	chance = 3,
 	action =
-	function(self, pos, node)
-        explosion(pos, 3, 1)
+	function(pos, node)
+		--minetest.chat_send_all(pos_to_string(pos))
+        explosion(pos, 3, 0, 1)
 	end
 })
-]]
+
 
 minetest.register_abm({
 	nodenames = {"nssb:mornen", "nssb:mornen_flowing"},
