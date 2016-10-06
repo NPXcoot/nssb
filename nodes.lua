@@ -1,4 +1,12 @@
 --Materials
+minetest.register_node("nssb:memoryone", {
+	description = "Memoryone",
+	tiles = {"mossy_stone_column.png"},
+	is_ground_content = false,
+	groups = {cracky=2, stone=2},
+	sounds = default.node_sound_stone_defaults(),
+})
+
 minetest.register_node("nssb:mossy_stone_brick", {
 	description = "Mossy Stone Brick",
 	tiles = {"mossy_stone_brick.png"},
