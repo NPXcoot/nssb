@@ -176,7 +176,7 @@ minetest.register_abm({
 		minetest.remove_node(pos)
 	end
 })
--- danno degli errori strani
+
 minetest.register_abm({
 	nodenames = {"nssb:fall_morentir"},
 	neighbors = {"nssb:fall_morentir"},
@@ -192,10 +192,11 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"nssb:boum_morentir"},
 	neighbors = {"nssb:morentir"},
-	interval = 1,
-	chance = 3,
+	interval = 5,
+	chance = 1,
 	action =
 	function(pos, node)
+		--aggiungere la condizione se il giocatore è nel raggio di 10 blocchi...
 		--minetest.chat_send_all(pos_to_string(pos))
         explosion(pos, 3, 0, 1)
 	end
@@ -489,7 +490,7 @@ minetest.register_ore({
 
 minetest.register_ore({
 		ore_type        = "blob",
-		ore             = "nssb:fall_morentir", --morelentir
+		ore             = "nssb:morelentir",
 		wherein         = "air",
 		clust_scarcity  = 16 * 16 * 16,
 		clust_size      = 6,
@@ -685,6 +686,25 @@ local function replace(old, new)
 	end
 end
 
+minetest.register_ore({
+		ore_type        = "blob",
+		ore             = "nssb:fall_morentir", 
+		wherein         = "air",
+		clust_scarcity  = 16 * 16 * 16,
+		clust_size      = 6,
+		y_min           = -30204,
+		y_max           = -30109,
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.5,
+			scale = 0.2,
+			spread = {x = 5, y = 5, z = 5},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
+	})
+
 replace("default:stone", "nssb:morentir")
 replace("default:stone_with_coal", "nssb:life_energy_ore")
 replace("default:stone_with_iron", "nssb:morentir")
@@ -736,6 +756,16 @@ replace("default:water_flowing", "nssb:mornen_flowing")
 replace("default:mese_block", "nssb:life_energy_ore")
 replace({"nssb:ant_dirt","default:stone","default:cobble","default:stonebrick","default:mossycobble","default:desert_stone","default:desert_cobble","default:desert_stonebrick","default:sandstone","default:sandstonebrick"}, "nssb:morkemen")
 
+minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = "nssb:boum_morentir",
+			wherein        = "nssb:morentir",
+			clust_scarcity = 13*13*13,
+			clust_num_ores = 1,
+			clust_size     = 1,
+			y_min          = -30205,
+			y_max          = -30157,
+		})
 
 --7� layer from 30190 to 30197 is indistructible
 

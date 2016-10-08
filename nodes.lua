@@ -468,7 +468,7 @@ minetest.register_node("nssb:fall_morentir", {
 })
 
 minetest.register_node("nssb:indistructible_morentir", {
-	description = "Dark Indistrucltible Stone",
+	description = "Dark Indistructible Stone",
 	tiles = {"morentir.png"},
 	groups = {cracky=1},
 	is_ground_content = true,
