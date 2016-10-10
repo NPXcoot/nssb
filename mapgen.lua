@@ -77,7 +77,7 @@ function nssb_register_buildings(
 			end
 		else	--underground==true
 			if minp.y<0 then
-				minetest.chat_send_all("Posmin: "..(minetest.pos_to_string(minp)).." Posmax: "..(minetest.pos_to_string(maxp)))
+				--minetest.chat_send_all("Posmin: "..(minetest.pos_to_string(minp)).." Posmax: "..(minetest.pos_to_string(maxp)))
 				local i, jj, k, j
 				local flag=0
 
@@ -146,8 +146,6 @@ nssb_register_buildings ('doppiopiccosabbia', 11, "default:desert_sand", 1, "def
 nssb_register_buildings ('piccoscrausics', 8, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 3, false, nil, false, false, false)
 nssb_register_buildings ('fossasand', 1, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 16, false, nil, false, false, false)
 nssb_register_buildings ('portal', 1, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "air", 7, false, nil, false, false, true)
-
---minetest.place_schematic({x=0, y=-1000, z=0}, minetest.get_modpath("nssb").."/schems/portalhome.mts", "0", {}, true)
 --abm
 
 minetest.register_abm({
@@ -207,12 +205,12 @@ minetest.register_abm({
 	nodenames = {"nssb:mornen", "nssb:mornen_flowing"},
 	neighbors = {"air"},
 	interval = 1.0,
-	chance = 3,
+	chance = 5,
 	action =
 		function (pos, node)
 			minetest.add_particlespawner({
-				amount = 3,
-				time = 3,
+				amount = 1,
+				time = 2,
 				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
 				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
 				minvel = {x=0, y=0.1, z=0},
@@ -235,12 +233,12 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"nssb:portal"},
 	neighbors = {"air"},
-	interval = 5.0,
+	interval = 1,
 	chance = 1,
 	action =
 		function (pos, node)
 			minetest.add_particlespawner({
-				amount = 15,
+				amount = 3,
 				time = 1,
 				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
 				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
@@ -256,46 +254,24 @@ minetest.register_abm({
 				vertical = true,
 				texture = "morparticle.png",
 			})
+		end
+})
+minetest.register_abm({
+	nodenames = {"nssb:portal"},
+	neighbors = {"air"},
+	interval = 7,
+	chance = 1,
+	action =
+		function (pos, node)
 			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 				if obj:is_player() then
 					local posp = obj:getpos()
-					minetest.chat_send_all("Posizione: "..minetest.pos_to_string(posp))
-					for i=-5,5 do
-						for k = -5,5 do
-							local pos1 = {x=pos.x+i,y=pos.y,z=pos.z+k}
-							local name = minetest.env:get_node(pos1).name
-							if name == "nssb:memoryone" then
-								obj:setpos({x=pos1.x, y=pos1.y+2, z =pos1.z})
-								local meta = minetest.get_meta(pos1)
-								meta:set_string("player"..obj:get_player_name(), minetest.pos_to_string(posp))
-							end
-						end
-					end
+					--minetest.chat_send_all("Posizione: "..minetest.pos_to_string(posp))
+					local pos1 = posmemory
 
-					--[[
-					local pos1 = {x=pos.x,y=-30093,z=pos.z}
-					local pos2 = {x=pos.x,y=-30092,z=pos.z}
-					local name = minetest.env:get_node(pos1).name
-					local name2
-					if name == "ignore" then
-						minetest.get_voxel_manip():read_from_map(pos1, pos1)
-						if not minetest.get_node_or_nil(pos1) then
-							minetest.emerge_area(vector.subtract(pos1, 80), vector.add(pos1, 80))
-							minetest.forceload_block(pos1)
-						end
-
-						--minetest.get_voxel_manip():read_from_map(pos1, pos1)
-						--minetest.chat_send_all("Dentro")
-						--minetest.get_voxel_manip():read_from_map(pos2, pos2)
-						name = minetest.get_node(pos1).name
-						name2 = minetest.get_node(pos2).name
-					end
-					if (name=="air") and (name2=="air") then
-						obj:setpos(pos1)
-					else
-						minetest.chat_send_all("Name: "..name.." Name2: "..name2)
-					end
-					]]
+					obj:setpos({x=5, y=pos1.y+2, z =5})
+					local meta = minetest.get_meta(pos1)
+					meta:set_string("player"..obj:get_player_name(), minetest.pos_to_string(posp))
 				end
 			end
 		end
@@ -304,12 +280,12 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"nssb:portalhome"},
 	neighbors = {"air"},
-	interval = 5.0,
+	interval = 1,
 	chance = 1,
 	action =
 		function (pos, node)
 			minetest.add_particlespawner({
-				amount = 15,
+				amount = 3,
 				time = 1,
 				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
 				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
@@ -325,44 +301,26 @@ minetest.register_abm({
 				vertical = true,
 				texture = "earth_particle.png",
 			})
+		end
+})
+
+minetest.register_abm({
+	nodenames = {"nssb:portalhome"},
+	neighbors = {"air"},
+	interval = 7,
+	chance = 1,
+	action =
+		function (pos, node)
 			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 				if obj:is_player() then
-					for i=-5,5 do
-						for k = -5,5 do
-							local pos1 = {x=pos.x+i,y=pos.y,z=pos.z+k}
-							local name = minetest.env:get_node(pos1).name
-							if name == "nssb:memoryone" then
-								--obj:setpos({x=pos1.x, y=pos1.y+2, z =pos1.z})
-								local meta = minetest.get_meta(pos1)
-								local target = minetest.string_to_pos(meta:get_string("player"..obj:get_player_name()))
-								--meta:set_string("player", minetest.pos_to_string(pos))
+					local pos1 = posmemory
+					local name = minetest.env:get_node(pos1).name
+					local meta = minetest.get_meta(pos1)
+					local target = minetest.string_to_pos(meta:get_string("player"..obj:get_player_name()))
+					--meta:set_string("player", minetest.pos_to_string(pos))
+					--minetest.chat_send_all("Posizione target: "..minetest.pos_to_string(target))
+					obj:setpos({x = target.x, y=target.y+1, z=target.z})
 
-								minetest.chat_send_all("Posizione target: "..minetest.pos_to_string(target))
-								obj:setpos({x = target.x, y=target.y+2, z=target.z})
-							end
-						end
-					end
-					--[[
-					local pos1
-					local pos2
-					local name2
-					for i=0,140 do
-						pos1 = {x = pos.x, y = i, z = pos.z}
-						pos2 = {x = pos.x, y = i+1, z = pos.z}
-						local name = minetest.env:get_node(pos1).name
-						if name == "ignore" then
-							minetest.get_voxel_manip():read_from_map(pos1, pos1)
-							minetest.get_voxel_manip():read_from_map(pos2, pos2)
-							name = minetest.get_node(pos1).name
-							name2 = minetest.get_node(pos2).name
-						end
-						--minetest.chat_send_all("Name: "..name)
-						if (name == "air") and (name2 == "air") then
-							obj:setpos(pos1)
-							return
-						end
-					end
-					]]
 				end
 			end
 		end
@@ -688,7 +646,7 @@ end
 
 minetest.register_ore({
 		ore_type        = "blob",
-		ore             = "nssb:fall_morentir", 
+		ore             = "nssb:fall_morentir",
 		wherein         = "air",
 		clust_scarcity  = 16 * 16 * 16,
 		clust_size      = 6,
@@ -780,4 +738,38 @@ for i=1,9 do
 		y_min          = -30213,
 		y_max          = -30206,
 	})
+end
+
+
+--Place the buildings in the morlendor
+posplace = {x=0, y=-30093, z=0}
+posmemory = {x=0, y=-30092, z=0}
+if posplace then
+	--minetest.get_voxel_manip():read_from_map(posplace, posplace)
+	if not minetest.get_node_or_nil(posplace) then
+		minetest.emerge_area(vector.subtract(posplace, 80), vector.add(posplace, 80))
+	end
+	-- teleport the player
+	minetest.after(5, function(posplace)
+		minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+		minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+	end, posplace)
+end
+
+
+posarena = {x=777, y=-30096, z=-777}
+if posarena then
+	--minetest.get_voxel_manip():read_from_map(posplace, posplace)
+	if not minetest.get_node_or_nil(posarena) then
+		minetest.emerge_area(vector.subtract(posarena, 120), vector.add(posarena, 120))
+	end
+	-- teleport the player
+	minetest.after(5, function(posarena)
+		minetest.place_schematic(posarena, minetest.get_modpath("nssb").."/schems/arena31.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-16}, minetest.get_modpath("nssb").."/schems/arena32.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-36}, minetest.get_modpath("nssb").."/schems/arena33.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-50}, minetest.get_modpath("nssb").."/schems/arena34.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-68}, minetest.get_modpath("nssb").."/schems/arena35.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-83}, minetest.get_modpath("nssb").."/schems/arena36.mts", "0", {}, true)
+	end, posarena)
 end

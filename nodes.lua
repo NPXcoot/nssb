@@ -3,8 +3,8 @@ minetest.register_node("nssb:memoryone", {
 	description = "Memoryone",
 	tiles = {"very_mossy_stone_brick.png"},
 	is_ground_content = false,
-	groups = {cracky=2, stone=2},
 	sounds = default.node_sound_stone_defaults(),
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:mossy_stone_brick", {
@@ -468,11 +468,12 @@ minetest.register_node("nssb:fall_morentir", {
 })
 
 minetest.register_node("nssb:indistructible_morentir", {
-	description = "Dark Indistructible Stone",
+	description = "Dark Indestructible Stone",
 	tiles = {"morentir.png"},
-	groups = {cracky=1},
+	--groups = {oddly_breakable_by_hand = 2},
 	is_ground_content = true,
 	sounds = default.node_sound_stone_defaults(),
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:morelentir", {
@@ -637,6 +638,7 @@ minetest.register_node("nssb:portal", {
 	liquid_viscosity = 0,
 	post_effect_color = {a=10, r=1, g=1, b=1},
 	groups = {liquid=3, puts_out_fire=1},
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:portalhome", {
@@ -667,6 +669,7 @@ minetest.register_node("nssb:portalhome", {
 	liquid_viscosity = 0,
 	post_effect_color = {a=10, r=1, g=1, b=1},
 	groups = {liquid=3, puts_out_fire=1},
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:morlote", {
