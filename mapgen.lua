@@ -1,5 +1,8 @@
 --schematichs generation
-
+local already_spawned = 0
+local posplace = {x=0, y=-30093, z=0}
+local posmemory = {x=0, y=-30092, z=0}
+local postest = {x=5, y=-30091, z=6}
 function nssb_register_buildings(
 	build,			-- name of the schematic
 	rand,			-- 1/rand is the probability of the spawning of the schematic if the place found is acceptable
@@ -70,10 +73,34 @@ function nssb_register_buildings(
 				end
 			end
 			if portal==true then
+				--[[
 				--this is a portal for the morlendor
-
-
-
+				if already_spawned == 0 then
+					--already_spawned = 1
+					local name = minetest.get_node(posplace).name
+					minetest.chat_send_all("Non ancora creato. Nome: "..name)
+					if name == "ignore" then
+						local pmin, pmax = minetest.get_voxel_manip():read_from_map(vector.subtract(posplace, 80), vector.add(posplace, 80))
+						name = minetest.get_node(posplace).name
+						minetest.chat_send_all("name dopo read_from_map:.."..name)
+						if name == "ignore" then
+							minetest.emerge_area(vector.subtract(posplace, 80), vector.add(posplace, 80))
+							name = minetest.get_node(posplace).name
+							minetest.chat_send_all("name dopo emerge_area:.."..name)
+						end
+						minetest.after(25, function(posplace)
+							name = minetest.get_node(posplace).name
+							minetest.chat_send_all("name prima di place_schematic:.."..name)
+							minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+							--minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+							--minetest.chat_send_all("3")
+							name = minetest.get_node(posplace).name
+							minetest.chat_send_all("name dopo place_schematic:.."..name)
+						end, posplace)
+					end
+					minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+				end
+				]]--
 			end
 		else	--underground==true
 			if minp.y<0 then
@@ -308,7 +335,7 @@ minetest.register_abm({
 	nodenames = {"nssb:portalhome"},
 	neighbors = {"air"},
 	interval = 7,
-	chance = 1,
+	chance = 2,
 	action =
 		function (pos, node)
 			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
@@ -326,6 +353,19 @@ minetest.register_abm({
 		end
 })
 
+minetest.register_abm({
+	nodenames = {"nssb:portalhome"},
+	neighbors = {"air"},
+	interval = 1,
+	chance = 1,
+	action =
+		function (pos, node)
+			if (already_spawned <= 5)  then
+				already_spawned = already_spawned+1
+				minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+			end
+		end
+})
 --nodes gen
 
 --This dimension is "divided" in in 7 layer.
@@ -745,18 +785,21 @@ end
 posplace = {x=0, y=-30093, z=0}
 posmemory = {x=0, y=-30092, z=0}
 if posplace then
+	--[[if name11 == "ignore" then
+		local pmin, pmax = minetest.get_voxel_manip():read_from_map(posplace, posplace)
+	end
+	]]
 	--minetest.get_voxel_manip():read_from_map(posplace, posplace)
 	if not minetest.get_node_or_nil(posplace) then
 		minetest.emerge_area(vector.subtract(posplace, 80), vector.add(posplace, 80))
 	end
-	-- teleport the player
 	minetest.after(5, function(posplace)
 		minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
-		minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+	--	minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+		minetest.chat_send_all("3")
 	end, posplace)
 end
-
-
+--[[
 posarena = {x=777, y=-30096, z=-777}
 if posarena then
 	--minetest.get_voxel_manip():read_from_map(posplace, posplace)
@@ -773,3 +816,4 @@ if posarena then
 		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-83}, minetest.get_modpath("nssb").."/schems/arena36.mts", "0", {}, true)
 	end, posarena)
 end
+]]
