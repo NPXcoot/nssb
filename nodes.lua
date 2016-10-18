@@ -468,7 +468,7 @@ minetest.register_node("nssb:fall_morentir", {
 })
 
 minetest.register_node("nssb:indistructible_morentir", {
-	description = "Dark Indestructible Stone",
+	description = "Dark Indistructible Stone",
 	tiles = {"morentir.png"},
 	--groups = {oddly_breakable_by_hand = 2},
 	is_ground_content = true,
@@ -727,8 +727,19 @@ minetest.register_craftitem("nssb:moranga_ingot", {
 })
 
 
-minetest.register_node("nssb:morvalar_egg", {
-	description = "Morvalar Egg",
-	tiles = {"morvalar_egg.png"},
+minetest.register_node("nssb:morvalar_block", {
+	description = "Morvalar Block",
+	tiles = {"morvalar_block.png"},
 	light_source = 13,
+})
+
+minetest.register_abm({
+	nodenames = {"nssb:morvalar_block"},
+	neighbors = {"nssb:indistructible_morentir"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node)
+		minetest.remove_node(pos)
+		minetest.add_entity(pos, "nssm:morvalar")
+	end
 })
