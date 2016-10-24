@@ -794,12 +794,12 @@ if posplace then
 		minetest.emerge_area(vector.subtract(posplace, 80), vector.add(posplace, 80))
 	end
 	minetest.after(5, function(posplace)
-		minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
+		minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", 0, {}, true)
 	--	minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
 		minetest.chat_send_all("3")
 	end, posplace)
 end
---[[
+
 posarena = {x=777, y=-30096, z=-777}
 if posarena then
 	--minetest.get_voxel_manip():read_from_map(posplace, posplace)
@@ -808,12 +808,37 @@ if posarena then
 	end
 	-- teleport the player
 	minetest.after(5, function(posarena)
-		minetest.place_schematic(posarena, minetest.get_modpath("nssb").."/schems/arena31.mts", "0", {}, true)
-		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-16}, minetest.get_modpath("nssb").."/schems/arena32.mts", "0", {}, true)
-		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-36}, minetest.get_modpath("nssb").."/schems/arena33.mts", "0", {}, true)
-		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-50}, minetest.get_modpath("nssb").."/schems/arena34.mts", "0", {}, true)
-		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-68}, minetest.get_modpath("nssb").."/schems/arena35.mts", "0", {}, true)
-		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-83}, minetest.get_modpath("nssb").."/schems/arena36.mts", "0", {}, true)
+		minetest.place_schematic(posarena, minetest.get_modpath("nssb").."/schems/arena41.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-9}, minetest.get_modpath("nssb").."/schems/arena42.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-18}, minetest.get_modpath("nssb").."/schems/arena43.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-27}, minetest.get_modpath("nssb").."/schems/arena44.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-36}, minetest.get_modpath("nssb").."/schems/arena45.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-45}, minetest.get_modpath("nssb").."/schems/arena46.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-54}, minetest.get_modpath("nssb").."/schems/arena47.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-63}, minetest.get_modpath("nssb").."/schems/arena48.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-72}, minetest.get_modpath("nssb").."/schems/arena49.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-81}, minetest.get_modpath("nssb").."/schems/arena410.mts", "0", {}, true)
+		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-90}, minetest.get_modpath("nssb").."/schems/arena411.mts", "0", {}, true)
 	end, posarena)
 end
-]]
+
+minetest.register_abm({
+	nodenames = {"nssb:indistructible_morentir"},
+	neighbors = {"nssb:mornar"},
+	interval = 1.0,
+	chance = 1,
+	action = function(pos, node)
+			minetest.chat_send_all("Ciao ciao pirloni")
+			minetest.place_schematic(posarena, minetest.get_modpath("nssb").."/schems/arena41.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-9}, minetest.get_modpath("nssb").."/schems/arena42.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-18}, minetest.get_modpath("nssb").."/schems/arena43.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-27}, minetest.get_modpath("nssb").."/schems/arena44.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-36}, minetest.get_modpath("nssb").."/schems/arena45.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-45}, minetest.get_modpath("nssb").."/schems/arena46.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-54}, minetest.get_modpath("nssb").."/schems/arena47.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-63}, minetest.get_modpath("nssb").."/schems/arena48.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-72}, minetest.get_modpath("nssb").."/schems/arena49.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-81}, minetest.get_modpath("nssb").."/schems/arena410.mts", "0", {}, true)
+			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-90}, minetest.get_modpath("nssb").."/schems/arena411.mts", "0", {}, true)
+		end
+})

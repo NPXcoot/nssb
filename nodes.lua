@@ -471,7 +471,7 @@ minetest.register_node("nssb:indistructible_morentir", {
 	description = "Dark Indistructible Stone",
 	tiles = {"morentir.png"},
 	--groups = {oddly_breakable_by_hand = 2},
-	is_ground_content = true,
+	is_ground_content = false,
 	sounds = default.node_sound_stone_defaults(),
 	on_blast = function() end,
 })
@@ -485,7 +485,7 @@ minetest.register_node("nssb:morelentir", {
 			name = "morelentir_animated.png",
 			animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 6.0},
 		},},
-	is_ground_content = true,
+	is_ground_content = false,
 	groups = {cracky=1},
 	sounds = default.node_sound_stone_defaults(),
 })
@@ -531,7 +531,7 @@ minetest.register_node("nssb:mornar", {
 	damage_per_second = 4,
 	})
 
-	minetest.register_node("nssb:mornen", {
+minetest.register_node("nssb:mornen", {
 	description = "Black Water",
 	inventory_image = minetest.inventorycube("mornen.png"),
 	drawtype = "liquid",
@@ -547,7 +547,7 @@ minetest.register_node("nssb:mornar", {
 	pointable = false,
 	diggable = false,
 	buildable_to = true,
-	is_ground_content = false,
+	is_ground_content = true,
 	drop = "",
 	light_source = 14,
 	liquid_range= 4,
