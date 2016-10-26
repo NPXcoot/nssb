@@ -188,8 +188,8 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"nssb:morlote"},
 	neighbors = {"air"},
-	interval = 30,
-	chance = 40,
+	interval = 40,
+	chance = 60,
 	action =
 	function(pos, node)
 		local pos1 = {x=pos.x, y=pos.y+1, z=pos.z}
@@ -638,7 +638,7 @@ minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "nssb:morlote",
 			wherein        = "air",
-			clust_scarcity = 6*6*6,
+			clust_scarcity = 7*7*7,
 			clust_num_ores = 1,
 			clust_size     = 1,
 			y_min          = -30094,
@@ -780,6 +780,18 @@ for i=1,9 do
 	})
 end
 
+for i=1,12 do
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "air",
+		wherein        = {"default:water_source", "default:water_flowing", "default:lava_source", "default:lava_flowing"},
+		clust_scarcity = 1,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = -30207,
+		y_max          = -30045,
+	})
+end
 
 --Place the buildings in the morlendor
 posplace = {x=0, y=-30093, z=0}
@@ -799,7 +811,7 @@ if posplace then
 		minetest.chat_send_all("3")
 	end, posplace)
 end
-
+--[[
 posarena = {x=777, y=-30096, z=-777}
 if posarena then
 	--minetest.get_voxel_manip():read_from_map(posplace, posplace)
@@ -842,3 +854,4 @@ minetest.register_abm({
 			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-90}, minetest.get_modpath("nssb").."/schems/arena411.mts", "0", {}, true)
 		end
 })
+]]

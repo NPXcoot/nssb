@@ -454,7 +454,7 @@ minetest.register_node("nssb:boum_morentir", {
 	tiles = {"morentir.png"},
 	is_ground_content = true,
 	groups = {cracky=1},
-	drop = "nssb_morentir",
+	drop = "nssb:morentir",
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -463,7 +463,7 @@ minetest.register_node("nssb:fall_morentir", {
 	tiles = {"morentir.png"},
 	is_ground_content = true,
 	groups = {cracky=1,falling_node = 1},
-	drop = "nssb_morentir",
+	drop = "nssb:morentir",
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -480,6 +480,7 @@ minetest.register_node("nssb:morelentir", {
 	description = "Dark Starred Stone",
 	inventory_image = minetest.inventorycube("morelentir.png"),
 	light_source = 10,
+	drop = "nssm:morelentir_dust",
 	tiles = {
 		{
 			name = "morelentir_animated.png",
