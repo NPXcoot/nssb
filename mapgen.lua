@@ -811,7 +811,7 @@ if posplace then
 		minetest.chat_send_all("3")
 	end, posplace)
 end
---[[
+
 posarena = {x=777, y=-30096, z=-777}
 if posarena then
 	--minetest.get_voxel_manip():read_from_map(posplace, posplace)
@@ -854,4 +854,3 @@ minetest.register_abm({
 			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-90}, minetest.get_modpath("nssb").."/schems/arena511.mts", "0", {}, true)
 		end
 })
-]]
