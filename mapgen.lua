@@ -205,11 +205,15 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"nssb:fall_morentir"},
 	neighbors = {"nssb:fall_morentir"},
-	interval = 10,
-	chance = 3,
+	interval = 1,
+	chance = 1,
 	action =
 	function(pos, node)
-		nodeupdate(pos)
+		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 7)) do
+			if obj:is_player() then
+				nodeupdate(pos)
+			end
+		end
 	end
 })
 
@@ -217,13 +221,15 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"nssb:boum_morentir"},
 	neighbors = {"nssb:morentir"},
-	interval = 5,
+	interval = 1,
 	chance = 1,
 	action =
 	function(pos, node)
-		--aggiungere la condizione se il giocatore è nel raggio di 10 blocchi...
-		--minetest.chat_send_all(pos_to_string(pos))
-        explosion(pos, 3, 0, 1)
+		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 5)) do
+			if obj:is_player() then
+				explosion(pos, 3, 0, 1)
+			end
+		end
 	end
 })
 
