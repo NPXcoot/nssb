@@ -853,6 +853,7 @@ if posarena then
 		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-72}, minetest.get_modpath("nssb").."/schems/arena59.mts", "0", {}, true)
 		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-81}, minetest.get_modpath("nssb").."/schems/arena510.mts", "0", {}, true)
 		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-90}, minetest.get_modpath("nssb").."/schems/arena511.mts", "0", {}, true)
+		minetest.set_node(posmorvalarblock, {name="nssb:morvalar_block"})
 	end, posarena)
 end
 
@@ -862,7 +863,7 @@ minetest.register_abm({
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node)
-			minetest.chat_send_all("Ciao ciao pirloni")
+			--minetest.chat_send_all("Ciao ciao pirloni")
 			minetest.place_schematic(posarena, minetest.get_modpath("nssb").."/schems/arena51.mts", "0", {}, true)
 			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-9}, minetest.get_modpath("nssb").."/schems/arena52.mts", "0", {}, true)
 			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-18}, minetest.get_modpath("nssb").."/schems/arena53.mts", "0", {}, true)
