@@ -734,6 +734,16 @@ minetest.register_node("nssb:morvalar_block", {
 	light_source = 13,
 })
 
+minetest.register_node("nssb:dis_morvalar_block", {
+	description = "Disactivated Morvalar Block",
+	tiles = {"dis_morvalar_block.png"},
+	on_punch = function(pos, node, puncher)
+		if puncher:get_wielded_item():get_name() == "nssm:superior_energy_globe" then
+			minetest.set_node(pos, {name="nssb:morvalar_block"})
+		end
+	end,
+})
+
 minetest.register_abm({
 	nodenames = {"nssb:morvalar_block"},
 	neighbors = {"nssb:indistructible_morentir"},
