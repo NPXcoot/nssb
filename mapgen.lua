@@ -877,3 +877,24 @@ minetest.register_abm({
 			minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-90}, minetest.get_modpath("nssb").."/schems/arena511.mts", "0", {}, true)
 		end
 })
+
+
+minetest.register_abm({
+	nodenames = {"default:lava_source"},
+	neighbors = {"nssb:morentir","nssb:morkemen", "nssb:morelentir", "nssb:mornen", "nssb:mornar","nssb:indistructible_morentir"},
+	interval = 1.0,
+	chance = 1,
+	action = function(pos, node)
+			minetest.set_node({x = pos.x, y = pos.y , z = pos.z}, {name = "air"})
+	end
+})
+
+minetest.register_abm({
+	nodenames = {"default:water_source"},
+	neighbors = {"nssb:morentir","nssb:morkemen", "nssb:morelentir", "nssb:mornen", "nssb:mornar","nssb:indistructible_morentir"},
+	interval = 1.0,
+	chance = 1,
+	action = function(pos, node)
+			minetest.set_node({x = pos.x, y = pos.y , z = pos.z}, {name = "air"})
+		end
+})
