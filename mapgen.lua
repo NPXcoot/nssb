@@ -853,7 +853,16 @@ if posarena then
 		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-72}, minetest.get_modpath("nssb").."/schems/arena59.mts", "0", {}, true)
 		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-81}, minetest.get_modpath("nssb").."/schems/arena510.mts", "0", {}, true)
 		minetest.place_schematic({x=posarena.x, y=-30096, z=posarena.z-90}, minetest.get_modpath("nssb").."/schems/arena511.mts", "0", {}, true)
-		minetest.set_node(posmorvalarblock, {name="nssb:morvalar_block"})
+		local objects = minetest.env:get_objects_inside_radius(posmorvalarblock, 90)
+		local found = 0
+		for _,obj in ipairs(objects) do
+			if (obj:get_luaentity() and (obj:get_luaentity().name=="nssm:morvalar0" or obj:get_luaentity().name=="nssm:morvalar1" or obj:get_luaentity().name=="nssm:morvalar2" or obj:get_luaentity().name=="nssm:morvalar3" or obj:get_luaentity().name=="nssm:morvalar4" or obj:get_luaentity().name=="nssm:morvalar5" or obj:get_luaentity().name=="nssm:morvalar6" or obj:get_luaentity().name=="nssm:morvalar" or )) then
+				found = 1
+			end
+		end
+		if found == 0 then
+			minetest.set_node(posmorvalarblock, {name="nssb:morvalar_block"})
+		end
 	end, posarena)
 end
 
