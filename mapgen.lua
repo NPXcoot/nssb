@@ -298,13 +298,20 @@ minetest.register_abm({
 		function (pos, node)
 			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 				if obj:is_player() then
-					local posp = obj:getpos()
-					--minetest.chat_send_all("Posizione: "..minetest.pos_to_string(posp))
 					local pos1 = posmemory
-
-					obj:setpos({x=5, y=pos1.y+2, z =5})
 					local meta = minetest.get_meta(pos1)
-					meta:set_string("player"..obj:get_player_name(), minetest.pos_to_string(posp))
+					--the timer is saved inside a position because for me the tonumber function doesn't work
+					local timer_pos = minetest.string_to_pos(meta:get_string("player_timer"..obj:get_player_name()))
+					if not timer_pos or ((timer_pos) and ((os.time() - timer_pos.x) >= 30)) then
+						local posp = obj:getpos()
+						--minetest.chat_send_all("Posizione: "..minetest.pos_to_string(posp))
+
+
+						obj:setpos({x=5, y=pos1.y+2, z =5})
+						meta:set_string("player"..obj:get_player_name(), minetest.pos_to_string(posp))
+						timer_pos = {x=os.time(), y = 0, z = 0}
+						meta:set_string("player_timer"..obj:get_player_name(), minetest.pos_to_string(timer_pos))
+					end
 				end
 			end
 		end
@@ -347,13 +354,21 @@ minetest.register_abm({
 			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 				if obj:is_player() then
 					local pos1 = posmemory
-					local name = minetest.env:get_node(pos1).name
 					local meta = minetest.get_meta(pos1)
-					local target = minetest.string_to_pos(meta:get_string("player"..obj:get_player_name()))
-					--meta:set_string("player", minetest.pos_to_string(pos))
-					--minetest.chat_send_all("Posizione target: "..minetest.pos_to_string(target))
-					obj:setpos({x = target.x, y=target.y+1, z=target.z})
+					--the timer is saved inside a position because for me the tonumber function doesn't work
+					local timer_pos = minetest.string_to_pos(meta:get_string("player_timer"..obj:get_player_name()))
 
+					if not timer_pos or ((timer_pos) and ((os.time() - timer_pos.x) >= 30)) then
+
+						local name = minetest.env:get_node(pos1).name
+
+						local target = minetest.string_to_pos(meta:get_string("player"..obj:get_player_name()))
+						if target then
+							obj:setpos({x = target.x, y=target.y+1, z=target.z})
+							timer_pos = {x=os.time(), y = 0, z = 0}
+							meta:set_string("player_timer"..obj:get_player_name(), minetest.pos_to_string(timer_pos))
+						end
+					end
 				end
 			end
 		end
@@ -800,6 +815,7 @@ for i=1,12 do
 end
 
 --Place the buildings in the morlendor
+posmorvalarblock = {x=827, y=-30094, z=-817}
 posplace = {x=0, y=-30093, z=0}
 posmemory = {x=0, y=-30092, z=0}
 if posplace then
