@@ -856,7 +856,7 @@ if posarena then
 		local objects = minetest.env:get_objects_inside_radius(posmorvalarblock, 90)
 		local found = 0
 		for _,obj in ipairs(objects) do
-			if (obj:get_luaentity() and (obj:get_luaentity().name=="nssm:morvalar0" or obj:get_luaentity().name=="nssm:morvalar1" or obj:get_luaentity().name=="nssm:morvalar2" or obj:get_luaentity().name=="nssm:morvalar3" or obj:get_luaentity().name=="nssm:morvalar4" or obj:get_luaentity().name=="nssm:morvalar5" or obj:get_luaentity().name=="nssm:morvalar6" or obj:get_luaentity().name=="nssm:morvalar" or )) then
+			if (obj:get_luaentity() and (obj:get_luaentity().name=="nssm:morvalar0" or obj:get_luaentity().name=="nssm:morvalar1" or obj:get_luaentity().name=="nssm:morvalar2" or obj:get_luaentity().name=="nssm:morvalar3" or obj:get_luaentity().name=="nssm:morvalar4" or obj:get_luaentity().name=="nssm:morvalar5" or obj:get_luaentity().name=="nssm:morvalar6" or obj:get_luaentity().name=="nssm:morvalar")) then
 				found = 1
 			end
 		end
