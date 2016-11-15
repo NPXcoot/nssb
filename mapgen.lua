@@ -172,7 +172,7 @@ nssb_register_buildings ('doppiopiccoghiaccio', 11, "default:dirt_with_snow", 1,
 nssb_register_buildings ('doppiopiccosabbia', 11, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 7, false, nil, false, false, false)
 nssb_register_buildings ('piccoscrausics', 8, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 3, false, nil, false, false, false)
 nssb_register_buildings ('fossasand', 1, "default:desert_sand", 1, "default:desert_stone",  1, "air", 3, "default:desert_sand", 16, false, nil, false, false, false)
-nssb_register_buildings ('portal', 100, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "air", 7, false, nil, false, false, true)
+nssb_register_buildings ('portal', 300, "default:dirt_with_grass", 2, "default:dirt", 2, "air", 24, "air", 11, false, nil, false, false, true)
 --abm
 
 minetest.register_abm({
