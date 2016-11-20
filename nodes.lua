@@ -15,6 +15,14 @@ minetest.register_node("nssb:mossy_stone_brick", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
+minetest.register_node("nssb:stone_brick", {
+	description = "Stone Brick",
+	tiles = {"default_stone_brick.png"},
+	is_ground_content = false,
+	groups = {cracky=2, stone=2},
+	sounds = default.node_sound_stone_defaults(),
+})
+
 minetest.register_node("nssb:very_mossy_stone_brick", {
 	description = "Very Mossy Stone Brick",
 	tiles = {"very_mossy_stone_brick.png"},
@@ -195,6 +203,15 @@ minetest.register_craft({
 		{'default:glass', 'bucket:bucket_water', 'default:glass'},
 		{'default:glass', 'default:mese_crystal', 'default:glass'},
 		{'default:glass', 'bucket:bucket_water', 'default:glass'},
+	}
+})
+
+minetest.register_craft({
+	output = 'nssb:morlamp',
+	recipe = {
+		{'nssb:morelentir_dust','nssb:morelentir_dust','nssb:morelentir_dust',},
+		{'nssb:morelentir_dust','nssb:morelentir_dust','nssb:morelentir_dust',},
+		{'nssb:morelentir_dust','nssb:morelentir_dust','nssb:morelentir_dust',},
 	}
 })
 
