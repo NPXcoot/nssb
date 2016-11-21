@@ -13,6 +13,7 @@ minetest.register_node("nssb:mossy_stone_brick", {
 	is_ground_content = false,
 	groups = {cracky=2, stone=2},
 	sounds = default.node_sound_stone_defaults(),
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:stone_brick", {
@@ -21,6 +22,7 @@ minetest.register_node("nssb:stone_brick", {
 	is_ground_content = false,
 	groups = {cracky=2, stone=2},
 	sounds = default.node_sound_stone_defaults(),
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:very_mossy_stone_brick", {
@@ -29,6 +31,7 @@ minetest.register_node("nssb:very_mossy_stone_brick", {
 	is_ground_content = false,
 	groups = {cracky=2, stone=2},
 	sounds = default.node_sound_stone_defaults(),
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:mossy_stone_column", {
@@ -37,6 +40,7 @@ minetest.register_node("nssb:mossy_stone_column", {
 	is_ground_content = false,
 	groups = {cracky=2, stone=2},
 	sounds = default.node_sound_stone_defaults(),
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:stone_column", {
@@ -45,6 +49,7 @@ minetest.register_node("nssb:stone_column", {
 	is_ground_content = false,
 	groups = {cracky=2, stone=2},
 	sounds = default.node_sound_stone_defaults(),
+	on_blast = function() end,
 })
 
 minetest.register_node("nssb:marine_stone", {

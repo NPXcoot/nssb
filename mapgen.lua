@@ -232,8 +232,8 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"nssb:morlote"},
 	neighbors = {"air"},
-	interval = 40,
-	chance = 60,
+	interval = 60,
+	chance = 100,
 	action =
 	function(pos, node)
 		local pos1 = {x=pos.x, y=pos.y+1, z=pos.z}
@@ -990,7 +990,7 @@ minetest.register_abm({
 		end
 })
 
-
+--[[
 minetest.register_abm({
 	nodenames = {"default:lava_source"},
 	neighbors = {"nssb:morentir","nssb:morkemen", "nssb:morelentir", "nssb:mornen", "nssb:mornar","nssb:indistructible_morentir"},
@@ -1000,6 +1000,7 @@ minetest.register_abm({
 			minetest.set_node({x = pos.x, y = pos.y , z = pos.z}, {name = "air"})
 	end
 })
+]]
 --[[
 minetest.register_abm({
 	nodenames = {"default:lava_source"},
@@ -1013,7 +1014,7 @@ minetest.register_abm({
 	end
 })
 ]]
-
+--[[
 minetest.register_abm({
 	nodenames = {"default:water_source"},
 	neighbors = {"nssb:morentir","nssb:morkemen", "nssb:morelentir", "nssb:mornen", "nssb:mornar","nssb:indistructible_morentir"},
@@ -1023,3 +1024,4 @@ minetest.register_abm({
 			minetest.set_node({x = pos.x, y = pos.y , z = pos.z}, {name = "air"})
 		end
 })
+]]
