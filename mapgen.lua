@@ -4,6 +4,9 @@ if minetest.get_modpath("moreores") then
 end
 
 nssb.mymapgenis = tonumber(minetest.setting_get('mymapgenis')) or 7
+if (nssb.mymapgenis~=6) and (nssb.mymapgenis~=7) then
+	nssb.mymapgenis = 7
+end
 
 --schematichs generation
 local already_spawned = 0
