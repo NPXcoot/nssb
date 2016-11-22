@@ -582,7 +582,7 @@ minetest.register_node("nssb:mornen", {
 	liquid_alternative_source = "nssb:mornen",
 	liquid_viscosity = 6,
 	post_effect_color = {a=500, r=1, g=1, b=1},
-	groups = {liquid=3, water=1, puts_out_fire=1},
+	groups = {liquid=3, puts_out_fire=1},
 })
 
 minetest.register_node("nssb:mornen_flowing", {

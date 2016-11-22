@@ -1,4 +1,5 @@
 local moreores
+firstplayer = 0
 if minetest.get_modpath("moreores") then
 	moreores=true
 end
@@ -9,7 +10,6 @@ if (nssb.mymapgenis~=6) and (nssb.mymapgenis~=7) then
 end
 
 --schematichs generation
-local already_spawned = 0
 local posplace = {x=0, y=-30093, z=0}
 local posmemory = {x=0, y=-30092, z=0}
 local postest = {x=5, y=-30091, z=6}
@@ -219,218 +219,12 @@ nssb_register_buildings ('blocohouse', 4, "default:stone", 0, "air",  0, "air", 
 nssb_register_buildings ('bigblocohouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -20, false, false, false)
 nssb_register_buildings ('blocobiggesthouse', 4, "default:stone", 0, "air",  0, "air", 3, "default:stone", 5, true, -30, false, false, false)
 
-minetest.register_abm({
-	nodenames = {"default:torch"},
-	neighbors = {"nssb:morentir","nssb:morkemen"},
-	interval = 1.0,
-	chance = 1,
-	action = function(pos, node)
-			minetest.set_node({x = pos.x, y = pos.y , z = pos.z}, {name = "nssb:mornar"})
-		end
-})
-
-minetest.register_abm({
-	nodenames = {"nssb:morlote"},
-	neighbors = {"air"},
-	interval = 60,
-	chance = 100,
-	action =
-	function(pos, node)
-		local pos1 = {x=pos.x, y=pos.y+1, z=pos.z}
-		local n = minetest.env:get_node(pos1).name
-		if n ~= "air" then
-			return
-		end
-		minetest.add_entity(pos1, "nssm:morgre")
-		minetest.remove_node(pos)
-	end
-})
-
-minetest.register_abm({
-	nodenames = {"nssb:fall_morentir"},
-	neighbors = {"nssb:fall_morentir"},
-	interval = 1,
-	chance = 1,
-	action =
-	function(pos, node)
-		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 7)) do
-			if obj:is_player() then
-				nodeupdate(pos)
-			end
-		end
-	end
-})
 
 
-minetest.register_abm({
-	nodenames = {"nssb:boum_morentir"},
-	neighbors = {"nssb:morentir"},
-	interval = 1,
-	chance = 1,
-	action =
-	function(pos, node)
-		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 5)) do
-			if obj:is_player() then
-				explosion(pos, 3, 0, 1)
-			end
-		end
-	end
-})
 
 
-minetest.register_abm({
-	nodenames = {"nssb:mornen", "nssb:mornen_flowing"},
-	neighbors = {"air"},
-	interval = 1.0,
-	chance = 5,
-	action =
-		function (pos, node)
-			minetest.add_particlespawner({
-				amount = 1,
-				time = 2,
-				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
-				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
-				minvel = {x=0, y=0.1, z=0},
-				maxvel = {x=0, y=0.3, z=0},
-				minacc = {x=0,y=0,z=0},
-				maxacc = {x=0,y=0,z=0},
-				minexptime = 1,
-				maxexptime = 1.2,
-				minsize = 0.5,
-				maxsize = 0.7,
-				collisiondetection = false,
-				vertical = true,
-				texture = "morparticle.png",
-			})
-		end
-
-})
 
 
-minetest.register_abm({
-	nodenames = {"nssb:portal"},
-	neighbors = {"air"},
-	interval = 1,
-	chance = 1,
-	action =
-		function (pos, node)
-			minetest.add_particlespawner({
-				amount = 3,
-				time = 1,
-				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
-				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
-				minvel = {x=0, y=0.1, z=0},
-				maxvel = {x=0, y=0.8, z=0},
-				minacc = {x=0,y=0,z=0},
-				maxacc = {x=0,y=0.4,z=0},
-				minexptime = 1,
-				maxexptime = 3,
-				minsize = 0.5,
-				maxsize = 1.4,
-				collisiondetection = false,
-				vertical = true,
-				texture = "morparticle.png",
-			})
-		end
-})
-minetest.register_abm({
-	nodenames = {"nssb:portal"},
-	neighbors = {"air"},
-	interval = 7,
-	chance = 1,
-	action =
-		function (pos, node)
-			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
-				if obj:is_player() then
-					local pos1 = posmemory
-					local meta = minetest.get_meta(pos1)
-					--the timer is saved inside a position because for me the tonumber function doesn't work
-					local timer_pos = minetest.string_to_pos(meta:get_string("player_timer"..obj:get_player_name()))
-					if not timer_pos or ((timer_pos) and ((os.time() - timer_pos.x) >= 30)) then
-						local posp = obj:getpos()
-						--minetest.chat_send_all("Posizione: "..minetest.pos_to_string(posp))
-
-
-						obj:setpos({x=5, y=pos1.y+2, z =5})
-						meta:set_string("player"..obj:get_player_name(), minetest.pos_to_string(posp))
-						timer_pos = {x=os.time(), y = 0, z = 0}
-						meta:set_string("player_timer"..obj:get_player_name(), minetest.pos_to_string(timer_pos))
-					end
-				end
-			end
-		end
-})
-
-minetest.register_abm({
-	nodenames = {"nssb:portalhome"},
-	neighbors = {"air"},
-	interval = 1,
-	chance = 1,
-	action =
-		function (pos, node)
-			minetest.add_particlespawner({
-				amount = 3,
-				time = 1,
-				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
-				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
-				minvel = {x=0, y=0.1, z=0},
-				maxvel = {x=0, y=0.8, z=0},
-				minacc = {x=0,y=0,z=0},
-				maxacc = {x=0,y=0.4,z=0},
-				minexptime = 1,
-				maxexptime = 3,
-				minsize = 0.5,
-				maxsize = 1.4,
-				collisiondetection = false,
-				vertical = true,
-				texture = "earth_particle.png",
-			})
-		end
-})
-
-minetest.register_abm({
-	nodenames = {"nssb:portalhome"},
-	neighbors = {"air"},
-	interval = 7,
-	chance = 2,
-	action =
-		function (pos, node)
-			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
-				if obj:is_player() then
-					local pos1 = posmemory
-					local meta = minetest.get_meta(pos1)
-					--the timer is saved inside a position because for me the tonumber function doesn't work
-					local timer_pos = minetest.string_to_pos(meta:get_string("player_timer"..obj:get_player_name()))
-
-					if not timer_pos or ((timer_pos) and ((os.time() - timer_pos.x) >= 30)) then
-
-						local name = minetest.env:get_node(pos1).name
-
-						local target = minetest.string_to_pos(meta:get_string("player"..obj:get_player_name()))
-						if target then
-							obj:setpos({x = target.x, y=target.y+1, z=target.z})
-							timer_pos = {x=os.time(), y = 0, z = 0}
-							meta:set_string("player_timer"..obj:get_player_name(), minetest.pos_to_string(timer_pos))
-						end
-					end
-				end
-			end
-		end
-})
-
-minetest.register_abm({
-	nodenames = {"nssb:portalhome"},
-	neighbors = {"air"},
-	interval = 1,
-	chance = 1,
-	action =
-		function (pos, node)
-			if (already_spawned <= 5)  then
-				already_spawned = already_spawned+1
-				minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
-			end
-		end
-})
 --nodes gen
 
 --This dimension is "divided" in in 7 layer.
@@ -760,7 +554,7 @@ minetest.register_ore({
 			ore_type       = "scatter",
 			ore            = "nssm:morwa_statue",
 			wherein        = "air",
-			clust_scarcity = 20*20*20,
+			clust_scarcity = 18*18*18,
 			clust_num_ores = 1,
 			clust_size     = 1,
 			y_min          = -30094,
@@ -932,8 +726,6 @@ if posplace then
 	end
 	minetest.after(5, function(posplace)
 		minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", 0, {}, true)
-	--	minetest.place_schematic(posplace, minetest.get_modpath("nssb").."/schems/memoportal.mts", "0", {}, true)
-		minetest.chat_send_all("3")
 	end, posplace)
 end
 
@@ -1001,9 +793,8 @@ minetest.register_abm({
 	end
 })
 ]]
---[[
 minetest.register_abm({
-	nodenames = {"default:lava_source"},
+	nodenames = {"default:lava_source", "default:lava_flowing"},
 	neighbors = {"air"},
 	interval = 1.0,
 	chance = 1,
@@ -1013,7 +804,24 @@ minetest.register_abm({
 			end
 	end
 })
-]]
+--If the generated chunks of map are in Morlendor remove the lava_source nodes
+--[[
+minetest.register_on_generated(function(minp, maxp, seed)
+    if maxp.y > -30000 then
+        if minp.y < -3000 then
+            maxp.y = -30000
+        else
+            return
+        end
+    end
+	minetest.chat_send_all("Ciao sono qui")
+    local poslist = minetest.find_nodes_in_area(minp,maxp,"default:lava_source")
+    for _,v in pairs(poslist) do
+		minetest.chat_send_all("Posizione: "..pos_to_string)
+        minetest.remove_node(v)
+    end
+end)
+]]--
 --[[
 minetest.register_abm({
 	nodenames = {"default:water_source"},
@@ -1025,3 +833,212 @@ minetest.register_abm({
 		end
 })
 ]]
+
+			--Abm
+function enableabms()
+	minetest.after(180, function()
+		minetest.register_abm({
+			nodenames = {"default:torch"},
+			neighbors = {"nssb:morentir","nssb:morkemen"},
+			interval = 1.0,
+			chance = 1,
+			action = function(pos, node)
+					minetest.set_node({x = pos.x, y = pos.y , z = pos.z}, {name = "nssb:mornar"})
+				end
+		})
+
+		minetest.register_abm({
+			nodenames = {"nssb:morlote"},
+			neighbors = {"air"},
+			interval = 60,
+			chance = 100,
+			action =
+			function(pos, node)
+				local pos1 = {x=pos.x, y=pos.y+1, z=pos.z}
+				local n = minetest.env:get_node(pos1).name
+				if n ~= "air" then
+					return
+				end
+				minetest.add_entity(pos1, "nssm:morgre")
+				minetest.remove_node(pos)
+			end
+		})
+
+		minetest.register_abm({
+			nodenames = {"nssb:fall_morentir"},
+			neighbors = {"nssb:fall_morentir"},
+			interval = 1,
+			chance = 1,
+			action =
+			function(pos, node)
+				for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 7)) do
+					if obj:is_player() then
+						nodeupdate(pos)
+					end
+				end
+			end
+		})
+
+
+		minetest.register_abm({
+			nodenames = {"nssb:boum_morentir"},
+			neighbors = {"nssb:morentir"},
+			interval = 1,
+			chance = 1,
+			action =
+			function(pos, node)
+				for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 5)) do
+					if obj:is_player() then
+						explosion(pos, 3, 0, 1)
+					end
+				end
+			end
+		})
+
+
+		minetest.register_abm({
+			nodenames = {"nssb:mornen", "nssb:mornen_flowing"},
+			neighbors = {"air"},
+			interval = 1.0,
+			chance = 5,
+			action =
+				function (pos, node)
+					minetest.add_particlespawner({
+						amount = 1,
+						time = 2,
+						minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
+						maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+						minvel = {x=0, y=0.1, z=0},
+						maxvel = {x=0, y=0.3, z=0},
+						minacc = {x=0,y=0,z=0},
+						maxacc = {x=0,y=0,z=0},
+						minexptime = 1,
+						maxexptime = 1.2,
+						minsize = 0.5,
+						maxsize = 0.7,
+						collisiondetection = false,
+						vertical = true,
+						texture = "morparticle.png",
+					})
+				end
+		})
+		minetest.chat_send_all("enableabms")
+	end)
+end
+
+minetest.register_abm({
+	nodenames = {"nssb:portal"},
+	neighbors = {"air"},
+	interval = 1,
+	chance = 1,
+	action =
+		function (pos, node)
+			minetest.add_particlespawner({
+				amount = 3,
+				time = 1,
+				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
+				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+				minvel = {x=0, y=0.1, z=0},
+				maxvel = {x=0, y=0.8, z=0},
+				minacc = {x=0,y=0,z=0},
+				maxacc = {x=0,y=0.4,z=0},
+				minexptime = 1,
+				maxexptime = 3,
+				minsize = 0.5,
+				maxsize = 1.4,
+				collisiondetection = false,
+				vertical = true,
+				texture = "morparticle.png",
+			})
+		end
+})
+minetest.register_abm({
+	nodenames = {"nssb:portal"},
+	neighbors = {"air"},
+	interval = 7,
+	chance = 1,
+	action =
+		function (pos, node)
+			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+				if obj:is_player() then
+					local pos1 = posmemory
+					local meta = minetest.get_meta(pos1)
+					--the timer is saved inside a position because for me the tonumber function doesn't work
+					local timer_pos = minetest.string_to_pos(meta:get_string("player_timer"..obj:get_player_name()))
+					if not timer_pos or ((timer_pos) and ((os.time() - timer_pos.x) >= 30)) then
+						local posp = obj:getpos()
+						--minetest.chat_send_all("Posizione: "..minetest.pos_to_string(posp))
+
+						obj:setpos({x=5, y=pos1.y+2, z =5})
+						if firstplayer == 0 then
+							minetest.chat_send_all("Avvio il timer. firstplayer= "..firstplayer)
+							enablespawns()
+							minetest.chat_send_all("Tra le funzioni. firstplayer= "..firstplayer)
+							enableabms()
+							minetest.chat_send_all("Dopo le funzioni. Firstplayer= "..firstplayer)
+						end
+						meta:set_string("player"..obj:get_player_name(), minetest.pos_to_string(posp))
+						timer_pos = {x=os.time(), y = 0, z = 0}
+						meta:set_string("player_timer"..obj:get_player_name(), minetest.pos_to_string(timer_pos))
+					end
+				end
+			end
+		end
+})
+
+minetest.register_abm({
+	nodenames = {"nssb:portalhome"},
+	neighbors = {"air"},
+	interval = 1,
+	chance = 1,
+	action =
+		function (pos, node)
+			minetest.add_particlespawner({
+				amount = 3,
+				time = 1,
+				minpos = {x=pos.x-0.5, y=pos.y+0.5, z=pos.z-0.5},
+				maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+				minvel = {x=0, y=0.1, z=0},
+				maxvel = {x=0, y=0.8, z=0},
+				minacc = {x=0,y=0,z=0},
+				maxacc = {x=0,y=0.4,z=0},
+				minexptime = 1,
+				maxexptime = 3,
+				minsize = 0.5,
+				maxsize = 1.4,
+				collisiondetection = false,
+				vertical = true,
+				texture = "earth_particle.png",
+			})
+		end
+})
+
+minetest.register_abm({
+	nodenames = {"nssb:portalhome"},
+	neighbors = {"air"},
+	interval = 7,
+	chance = 2,
+	action =
+		function (pos, node)
+			for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+				if obj:is_player() then
+					local pos1 = posmemory
+					local meta = minetest.get_meta(pos1)
+					--the timer is saved inside a position because for me the tonumber function doesn't work
+					local timer_pos = minetest.string_to_pos(meta:get_string("player_timer"..obj:get_player_name()))
+
+					if not timer_pos or ((timer_pos) and ((os.time() - timer_pos.x) >= 30)) then
+
+						local name = minetest.env:get_node(pos1).name
+
+						local target = minetest.string_to_pos(meta:get_string("player"..obj:get_player_name()))
+						if target then
+							obj:setpos({x = target.x, y=target.y+1, z=target.z})
+							timer_pos = {x=os.time(), y = 0, z = 0}
+							meta:set_string("player_timer"..obj:get_player_name(), minetest.pos_to_string(timer_pos))
+						end
+					end
+				end
+			end
+		end
+})
